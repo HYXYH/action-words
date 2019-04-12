@@ -13,10 +13,13 @@ public class WordInput : MonoBehaviour
     [SerializeField]
     private List<TableCell> _selectedCells;
 
+    private BoardGame _boardGame;
+
     private void Start()
     {
         _book = FindObjectOfType<WordBook>();
         _selectedCells = new List<TableCell>();
+        _boardGame = GetComponentInParent<BoardGame>();
     }
 
     public bool InputModeEnabled() { return _inputMode; }
@@ -38,6 +41,7 @@ public class WordInput : MonoBehaviour
             {
                 cell.Activate();
             }
+            _boardGame.CallWordActivationCallback(_text.text, new List<Thaum>());
         }
         else
         {
