@@ -14,7 +14,7 @@ public class TetrinoPlayerSet : MonoBehaviour
         _pool = FindObjectOfType<Pool<TetrinoDraggable>>();
         _wb = FindObjectOfType<WordBook>();
 
-        for (int i = 0; i <3; i++)
+        for (int i = 0; i < 3; i++)
             GiveNewTetrino();
     }
 

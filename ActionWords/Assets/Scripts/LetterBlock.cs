@@ -5,40 +5,47 @@ using UnityEngine.UI;
 
 public class LetterBlock : MonoBehaviour
 {
-    [SerializeField]    private Thaum.Type  _thaum;
-    [SerializeField]    private char        _letter;
-
+    [SerializeField] private Thaum.Type  _thaum;
+    [SerializeField] private char        _letter;
     public Thaum.Type Thaum()  { return _thaum; }
     public char       Letter() { return _letter; }
 
     private Text _text;
-
-    [SerializeField] private Table _table;
+    
     private TableCell _aimedCell;
     private Animator _anim;
 
+//  ~~~~~~~~~~~~~~~~~~~~~~~~ All about rotation ~~~~~~~~~~~~~~~~~~~~~~~
+    private Vector3 _stableLocalPosition;
+    
+    public void RememberLocalPosition()
+    { _stableLocalPosition = transform.localPosition; }
+
+    public void ResetLocalPosition()
+    { transform.localPosition = _stableLocalPosition; }
+//  ~~~~~~~~~~~~~~~~~~~~~~~~ Not about rotation ~~~~~~~~~~~~~~~~~~~~~~~
+
+
     void Awake()
     {
-        _table = FindObjectOfType<Table>();
         _text = GetComponentInChildren<Text>();
-
-        _letter = _text.text[0];
 
         _anim = GetComponent<Animator>();
     }
 
     public void Construct (char letter, Thaum.Type thaum)
     {
+        //_anim.SetTrigger(letter.ToString());
         _letter = letter;
         _thaum  = thaum;
 
-        _text.text = "" + letter;
+        _anim.SetTrigger("NoLetter"); _text.text = "" + letter;
     }
 
 
-    public TableCell FindAimedCell ()
+    public TableCell FindAimedCell (Table table)
     {
-        _aimedCell = _table.GetAimedCell(this.gameObject);
+        _aimedCell = table.GetAimedCell(this.transform.position);
         return _aimedCell;
     }
 

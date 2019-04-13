@@ -48,18 +48,8 @@ public class WordInput : MonoBehaviour
         }
         Clear();
     }
-    /*
-    public void CancelSelection()
-    {
-        Debug.Log("Cancelling selection.");
-        foreach (TableCell cell in _selectedCells)
-        {
-            cell.Unselect();
-        }
 
-        Clear();
-    }
-    */
+
     private void Clear()
     {
         _text.text = "";

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class TableCell : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler
+public class TableCell : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler,
+                                        IPointerEnterHandler, IPointerDownHandler
 {
     private bool _selected;
 
@@ -34,8 +36,10 @@ public class TableCell : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         _hasBlock  = true;
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnPointerDown(PointerEventData eventData)
     {
+        _input.EnableInputMode();
+        Select();
     }
 
     private void Select()
