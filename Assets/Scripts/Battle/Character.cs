@@ -52,14 +52,14 @@ namespace Battle
                 _health = 0;
                 
                 //play dead animation
-                _shakeEndTime = Time.time + _deadShakeTime;
+                StartCoroutine(Shake(_deadShakeTime));
             }
             else
             {         
-                _shakeEndTime = Time.time + _shakeTime;
+                StartCoroutine(Shake(_shakeTime));
             }
             UpdateProgressBar();
-            StartCoroutine(Shake());
+            
         }
 
         public bool IsDead()
@@ -73,22 +73,23 @@ namespace Battle
         }
 
 
-        private  IEnumerator Shake()
+        private  IEnumerator Shake(float shakeTime)
         {
+            _shakeEndTime = Time.time + shakeTime;
             Vector3 initPos = transform.position;
             while (_shakeEndTime > Time.time)
             {
                 //fade out
                 if (IsDead())
                 {
-                    float a = (_shakeEndTime - Time.time) / _shakeTime;
+                    float a = (_shakeEndTime - Time.time) / _deadShakeTime;
                     Color c = _avatar.color;
                     c.a = a;
                     _avatar.color = c;
                 }
 
                 Vector3 pos = initPos;
-                pos.x += Mathf.Sin(Time.time * _shakeSpeed) * _shakeAmp;
+                pos.x += Mathf.Sin(Time.time * _shakeSpeed) * _shakeAmp * Screen.width;
                 transform.position = pos;
                 yield return 1;
             }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 public class HashTable
@@ -25,6 +26,20 @@ public class HashTable
         Load (sourcePath);
     }
     
+    
+    public HashTable (int size, TextAsset textAsset)
+    {
+        _size = size;
+
+        _data = new List<string>[size];
+        for (int i = 0; i < size; i++)
+            _data[i] = new List<string>();
+
+        if (_data == null) Debug.Log("_data not created at all!");
+        if (_data[0] == null) Debug.Log("_data[0] not created.");
+
+        Load (textAsset);
+    }
 
 
     private int GetHash(string word)
@@ -80,4 +95,25 @@ public class HashTable
 
         stream.Close();
     }
+    
+    
+    public void Load(TextAsset textAsset)
+    {
+        StringReader stream = new StringReader(textAsset.text);
+        string tmpStr = stream.ReadLine();
+        
+        while (tmpStr != null)
+        {
+            Add(tmpStr);
+            tmpStr = stream.ReadLine();
+        }
+
+        for (int i = 0; i < _size; i++)
+        {
+            _data[i].Sort();
+        }
+
+    }
 }
+
+

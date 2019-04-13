@@ -15,14 +15,15 @@ public class WordBook : MonoBehaviour
     //private List<KeyValuePair<char, double>> _letters;
     private IOrderedEnumerable<KeyValuePair<char, double>> _letters;
 
-    [SerializeField]
-    private string _wordsFilePath;
+    // file extension is not needed
+    [SerializeField] private string _wordsFilePath = "russian_nouns";
 
     void Start()
     {
-        _table = new HashTable(50, _wordsFilePath);
-
-        string text = File.ReadAllText(_wordsFilePath, Encoding.UTF8);
+        TextAsset textAsset = Resources.Load<TextAsset>(_wordsFilePath);
+        _table = new HashTable(50, textAsset);
+        
+        string text = textAsset.text;
         text = Regex.Replace(text, @"\t|\n|\r|-", "");
         _letters = text.Where(c => Char.IsLetter(c))
                           .GroupBy(c => c)
@@ -34,6 +35,8 @@ public class WordBook : MonoBehaviour
         {
             Debug.Log("Key = " + kvp.Key + ", Value = "  + kvp.Value);
         }
+        
+        FindObjectOfType<TetrinoPlayerSet>().CustomStart();
     }
 
     public bool Contains (string word)
