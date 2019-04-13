@@ -9,7 +9,7 @@ public class TetrinoPlayerSet : MonoBehaviour
 
     WordBook _wb;
 
-    void Start()
+    public void Start()
     {
         _pool = FindObjectOfType<Pool<TetrinoDraggable>>();
         _wb = FindObjectOfType<WordBook>();

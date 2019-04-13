@@ -36,7 +36,7 @@ public class WordBook : MonoBehaviour
             Debug.Log("Key = " + kvp.Key + ", Value = "  + kvp.Value);
         }
         
-        FindObjectOfType<TetrinoPlayerSet>().CustomStart();
+        FindObjectOfType<TetrinoPlayerSet>().Start();
     }
 
     public bool Contains (string word)
