@@ -7,7 +7,6 @@ public class Pool<T> : MonoBehaviour
 {
     [SerializeField]
     protected List<T> _pool;
-    
 
     protected void Start()
     {

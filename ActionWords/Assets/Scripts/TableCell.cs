@@ -19,6 +19,7 @@ public class TableCell : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     public  char         Letter() { return _letter; }
 
     private WordInput _input;
+    
 
     void Start ()
     {

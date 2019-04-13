@@ -15,6 +15,7 @@ public class WordInput : MonoBehaviour
 
     private void Start()
     {
+        _text = GetComponentInChildren<Text>();
         _book = FindObjectOfType<WordBook>();
         _selectedCells = new List<TableCell>();
     }

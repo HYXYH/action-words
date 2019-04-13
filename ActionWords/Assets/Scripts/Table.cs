@@ -5,19 +5,30 @@ using UnityEngine.EventSystems;
 
 public class Table : MonoBehaviour
 {
+    private int _rank = 5;
+    private float _cellSize;
+    private float _cellOffset;
 
     [SerializeField] private TableCell[] _cells;
     private char[][] _table;
 
+    public bool CheckRTReady()
+    {
+        float rtWidth = GetComponent<RectTransform>().rect.width;
+        _cellOffset = rtWidth / (_rank * 10 + 1);
+        _cellSize = _cellOffset * 9;
+
+        return (Mathf.Abs(rtWidth) > 0.001);
+    }
+
     public float GetCellSize ()
     {
-        return _cells[0].GetComponent<RectTransform>().rect.size.y;
+        return _cellSize;
     }
 
     private void Awake()
     {
         _cells = GetComponentsInChildren<TableCell>();
-        Debug.LogError("ON AWAKE: Cell size: "+ GetCellSize());
     }
 
     public TableCell GetAimedCell (Vector3 blockPosition)

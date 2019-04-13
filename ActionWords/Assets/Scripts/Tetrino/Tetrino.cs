@@ -35,7 +35,7 @@ public class Tetrino : MonoBehaviour
         _blockPool = FindObjectOfType<BlockPool>();
     }
 
-    public void Construct(int nLetters, bool[][] blueprint, char[] letters, Thaum.Type[] types)
+    public void Construct(int nLetters, bool[][] blueprint, float size, char[] letters, Thaum.Type[] types)
     {
         int n = blueprint.Length;       float revN = 1 / (float)n;
         int m = blueprint[0].Length;    float revM = 1 / (float)m;
@@ -45,8 +45,8 @@ public class Tetrino : MonoBehaviour
         float cellSz = _table.GetCellSize();
 
         Debug.Log("Table cell size: " + cellSz + "x" + cellSz);
-        rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (m + 1) * cellSz);
-        rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,   (n + 1) * cellSz);
+        rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (m) * cellSz);
+        rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,   (n) * cellSz);
 
         Debug.Log("Tetrino created: table " + m + "x" + n + ", size: " + rect.rect.size.x + "x" + rect.rect.size.y);
 
@@ -91,13 +91,17 @@ public class Tetrino : MonoBehaviour
         return placeable;
     }
 
+    public delegate void Voidd();
+    public static event Voidd TetrinoPlaced;
+
     public void PlaceBlocks()
     {
         foreach (LetterBlock block in _blocks)
         {
             block.StayAtCell();
         }
-        FindObjectOfType<TetrinoPlayerSet>().GiveNewTetrino();
+
+        TetrinoPlaced();
     }
     
     public void Rotate(float angle)

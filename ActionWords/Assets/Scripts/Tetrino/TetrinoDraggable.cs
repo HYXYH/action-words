@@ -76,7 +76,7 @@ public class TetrinoDraggable : AttachedDraggable
         base.OnEndDrag(eventData);
     }
 
-    public void Construct(Tetrino.Type type, char[] letters, Thaum.Type[] thaums)
+    public void Construct(float size, Tetrino.Type type, char[] letters, Thaum.Type[] thaums)
     {
         bool[][] blueprint = new bool[2][];
         blueprint[0] = new bool[2];
@@ -111,6 +111,6 @@ public class TetrinoDraggable : AttachedDraggable
                 Debug.LogError("Use tetrino types 1-5.");
                 break;
         }
-        _tetrino.Construct(nBlocks, blueprint, letters, thaums);
+        _tetrino.Construct(nBlocks, blueprint, size, letters, thaums);
     }
 }
