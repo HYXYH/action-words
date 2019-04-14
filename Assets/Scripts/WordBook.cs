@@ -38,7 +38,7 @@ public class WordBook : MonoBehaviour
         } 
         */
         
-        FindObjectOfType<TetrinoPlayerSet>().Start();
+        //FindObjectOfType<TetrinoPlayerSet>().Start();
     }
 
     public bool Contains (string word)
