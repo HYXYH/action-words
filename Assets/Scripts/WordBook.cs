@@ -26,15 +26,17 @@ public class WordBook : MonoBehaviour
         string text = textAsset.text;
         text = Regex.Replace(text, @"\t|\n|\r|-", "");
         _letters = text.Where(c => Char.IsLetter(c))
-                          .GroupBy(c => c)
-                          .ToDictionary(g => g.Key, g => (double)g.Count() / text.Length)
-                          .OrderBy(key => key.Value);
+                       .GroupBy(c => c)
+                       .ToDictionary(g => g.Key, g => (double)g.Count() / text.Length)
+                       .OrderBy(key => key.Value);
 
-        Debug.Log("Dictionary count: " + _letters.Count());
+        // Debug.Log("Dictionary count: " + _letters.Count());
+        /* 
         foreach (KeyValuePair<char, double> kvp in _letters)
         {
             Debug.Log("Key = " + kvp.Key + ", Value = "  + kvp.Value);
-        }
+        } 
+        */
         
         FindObjectOfType<TetrinoPlayerSet>().Start();
     }
@@ -54,9 +56,9 @@ public class WordBook : MonoBehaviour
             cumulative += kvp.Value;
             if (diceRoll < cumulative)
             {
-                Debug.Log(cumulative);
+                // Debug.Log(cumulative);
                 selectedElement = kvp.Key;
-                Debug.Log(selectedElement);
+                // Debug.Log(selectedElement);
                 break;
             }
         }
@@ -73,7 +75,7 @@ public class WordBook : MonoBehaviour
         for (int i = 0; i < n; i++)
         {
             diceRoll = (double)r.Next(0, 100)/100;
-            Debug.Log(diceRoll);
+            // Debug.Log(diceRoll);
             letters[i] = GetRandLetter(diceRoll);
         }
 
