@@ -1,24 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using Battle;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Battle;
 
-public class Menu : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-
     [SerializeField] private BattleManager _battleManager;
-    [SerializeField] private  Text _resultText;
-    
-    // Start is called before the first frame update
+    [SerializeField] private Text _resultText;
+
     void Start()
     {
         _battleManager.SetBattleEndCallback(OnBattleEnd);
-    }
-
-    public void OnPlayClick()
-    {
         gameObject.SetActive(false);
         _battleManager.StartBattle();
     }
@@ -26,6 +20,8 @@ public class Menu : MonoBehaviour
 
     private void OnBattleEnd(bool playerWin)
     {
+        // TODO: Implement endbattle subscription with playerWin value in subscription messege
+        /*
         gameObject.SetActive(true);
         if (playerWin)
         {
@@ -35,5 +31,8 @@ public class Menu : MonoBehaviour
         {
             _resultText.text = "Defeat!";
         }
+        */
+
+        SceneManager.LoadScene(0);
     }
 }
