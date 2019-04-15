@@ -7,8 +7,8 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
-    guid: 7bcb6525a51f2f54e9eecbfa932cc99a
+    guid: 0b9efce37849c1a4aa20d35c24a809a2
   - enabled: 1
-    path: Assets/Scenes/_EXAMPLEBATTLE_.unity
-    guid: 1100f382f16404c3e8c65cc9573cdd79
+    path: Assets/Scenes/_BLOCKDRAG_.unity
+    guid: 0c824a57797beb144831e0f545c787c4
   m_configObjects: {}
