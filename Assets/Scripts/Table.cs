@@ -5,22 +5,44 @@ using UnityEngine.EventSystems;
 
 public class Table : MonoBehaviour
 {
+    private int _rank = 5;
+    private float _cellSize;
+    private float _cellOffset;
 
     [SerializeField] private TableCell[] _cells;
     private char[][] _table;
-    
-    public TableCell GetAimedCell (GameObject block)
-    {
-        Vector3 blockPosition = block.transform.position;
-        
-        float cellWidth  = 24.9f;      // To change
-        float cellHeight = 24.9f;      // To change
 
+    public bool CheckRTReady()
+    {
+        float rtWidth = GetComponent<RectTransform>().rect.width;
+        _cellOffset = rtWidth / (_rank * 10 + 1);
+        _cellSize = _cellOffset * 9;
+
+        return (Mathf.Abs(rtWidth) > 0.001);
+    }
+
+    public float GetCellSize ()
+    {
+        return _cellSize;
+    }
+
+    private void Awake()
+    {
+        _cells = GetComponentsInChildren<TableCell>();
+    }
+
+    public TableCell GetAimedCell (Vector3 blockPosition)
+    {
+        RectTransform rt = _cells[0].GetComponent<RectTransform>();
+
+        Debug.Log("Cell 0.\nSize: " + rt.rect.width + "x" + rt.rect.height + "\nOffsets: " + rt.rect.left + ", " + rt.rect.bottom + ", " + rt.rect.right + ", " + rt.rect.top +
+                  "\nDeltaSize: " + rt.sizeDelta.x + "x" + rt.sizeDelta.y + "\nSizeVector2: " + rt.rect.size.x + "x" + rt.rect.size.y);
+        float cellSz = GetCellSize();
 
         foreach (TableCell cell in _cells)
         {
             Vector3 delta = cell.transform.position - blockPosition;
-            if (Mathf.Abs(delta.x) < cellWidth && Mathf.Abs(delta.y) < cellHeight)
+            if (Mathf.Abs(delta.x) < cellSz/2 && Mathf.Abs(delta.y) < cellSz/2)
             {
                 return cell;
             }

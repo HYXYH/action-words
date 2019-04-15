@@ -18,7 +18,7 @@ public class WordBook : MonoBehaviour
     // file extension is not needed
     [SerializeField] private string _wordsFilePath = "russian_nouns";
 
-    void Start()
+    void Awake()
     {
         TextAsset textAsset = Resources.Load<TextAsset>(_wordsFilePath);
         _table = new HashTable(50, textAsset);
@@ -30,15 +30,14 @@ public class WordBook : MonoBehaviour
                        .ToDictionary(g => g.Key, g => (double)g.Count() / text.Length)
                        .OrderBy(key => key.Value);
 
-        // Debug.Log("Dictionary count: " + _letters.Count());
-        /* 
+        /*
+        Debug.Log("Dictionary count: " + _letters.Count());
+        
         foreach (KeyValuePair<char, double> kvp in _letters)
         {
             Debug.Log("Key = " + kvp.Key + ", Value = "  + kvp.Value);
         } 
         */
-        
-        //FindObjectOfType<TetrinoPlayerSet>().Start();
     }
 
     public bool Contains (string word)

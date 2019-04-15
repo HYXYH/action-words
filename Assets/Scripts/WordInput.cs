@@ -12,11 +12,11 @@ public class WordInput : MonoBehaviour
     [SerializeField] private Text _text;
     [SerializeField]
     private List<TableCell> _selectedCells;
-
     private BoardGame _boardGame;
 
     private void Start()
     {
+        _text = GetComponentInChildren<Text>();
         _book = FindObjectOfType<WordBook>();
         _selectedCells = new List<TableCell>();
         _boardGame = GetComponentInParent<BoardGame>();
@@ -37,6 +37,7 @@ public class WordInput : MonoBehaviour
     {
         if (_book.Contains(_text.text.ToLower()))
         {
+
             foreach (TableCell cell in _selectedCells)
             {
                 cell.Activate();
@@ -52,18 +53,8 @@ public class WordInput : MonoBehaviour
         }
         Clear();
     }
-    /*
-    public void CancelSelection()
-    {
-        Debug.Log("Cancelling selection.");
-        foreach (TableCell cell in _selectedCells)
-        {
-            cell.Unselect();
-        }
 
-        Clear();
-    }
-    */
+
     private void Clear()
     {
         _text.text = "";

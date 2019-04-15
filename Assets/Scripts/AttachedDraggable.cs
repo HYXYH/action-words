@@ -17,7 +17,7 @@ public class AttachedDraggable : Draggable
     {
         _ownerChanged = false;
         _owner = this.transform.parent.gameObject;
-        this.transform.SetParent(this.transform.parent.parent);
+        this.transform.SetParent(this.transform.parent.parent.parent);
         base.OnBeginDrag(eventData);
     }
 
