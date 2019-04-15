@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneSwitcher : MonoBehaviour
+public class MainMenuManager : MonoBehaviour
 {
-    public void SwitchScene ()
+    public void LoadRound ()
     {
         SceneManager.LoadScene(1);
+    }
+
+    public void GoVk ()
+    {
+        Application.OpenURL("https://vk.com/gameformonth");
     }
 }
