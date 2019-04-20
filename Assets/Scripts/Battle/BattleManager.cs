@@ -32,7 +32,8 @@ namespace Battle
             if (Time.time > _nextDamageTime && _isBattleStarted)
             {
                 _nextDamageTime = Time.time + _damageTime;
-                _player.DealDamage(_enemy.Damage);
+                int damage = _enemy.Attack();
+                _player.DealDamage(damage);
                 if (_player.IsDead())
                 {
                     _boardGame.EndBoardGame();
@@ -59,8 +60,9 @@ namespace Battle
 
         private void OnWordActivation(string word, List<Thaum> thaums)
         {
-            int dmg = word.Length * _player.Damage;
-            _enemy.DealDamage(dmg);
+            int damage = _player.Attack();
+            damage *= word.Length;
+            _enemy.DealDamage(damage);
             if (_enemy.IsDead())
             {
                 _boardGame.EndBoardGame();

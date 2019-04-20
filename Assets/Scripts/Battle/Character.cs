@@ -12,6 +12,7 @@ namespace Battle
         [SerializeField] private int _maxHealth;
         [SerializeField] private int _health;
         [SerializeField] private int _damage;
+        [SerializeField] private string _attackType;
 
         public string Name => _name;
         public int Damage => _damage;
@@ -27,6 +28,7 @@ namespace Battle
         private float _shakeEndTime = 0;
 
         [CanBeNull] private Action<string> _deadCallback;
+        private Animator _animator;
 
         public void SetDeadCallback(Action<string> callback)
         {
@@ -38,6 +40,7 @@ namespace Battle
             UpdateProgressBar();
             _charInfo = GetComponentInChildren<Text>();
             _charInfo.text = _name;
+            _animator = GetComponentInChildren<Animator>();
         }
         
         public void DealDamage(int damage)
@@ -62,6 +65,12 @@ namespace Battle
             
         }
 
+
+        public int Attack(){
+            _animator.SetTrigger(_attackType);
+            return _damage;
+        }
+
         public bool IsDead()
         {
             return _health <= 0;
@@ -76,24 +85,34 @@ namespace Battle
         private  IEnumerator Shake(float shakeTime)
         {
             _shakeEndTime = Time.time + shakeTime;
-            Vector3 initPos = transform.position;
+            Vector2 initPos = _avatar.rectTransform.anchoredPosition;
+            int timer = 0;
             while (_shakeEndTime > Time.time)
             {
+                timer++;
+                Color c = _avatar.color;
                 //fade out
                 if (IsDead())
                 {
                     float a = (_shakeEndTime - Time.time) / _deadShakeTime;
-                    Color c = _avatar.color;
                     c.a = a;
                     _avatar.color = c;
                 }
+                else
+                {
+                    float gb =  Mathf.Sin(timer * Time.deltaTime);
+                    c.g = gb;
+                    c.b = gb;
+                    _avatar.color = c;
+                }
 
-                Vector3 pos = initPos;
+                Vector2 pos = initPos;
                 pos.x += Mathf.Sin(Time.time * _shakeSpeed) * _shakeAmp * Screen.width;
-                transform.position = pos;
+                _avatar.rectTransform.anchoredPosition = pos;
                 yield return 1;
             }
-            transform.position = initPos;
+            _avatar.rectTransform.anchoredPosition = initPos;
+            _avatar.color = Color.white;
 
             if (IsDead())
             {
@@ -111,9 +130,7 @@ namespace Battle
 
         private void OnEnable()
         {
-            Color c = _avatar.color;
-            c.a = 1;
-            _avatar.color = c;
+            _avatar.color = Color.white;
             _health = _maxHealth;
             UpdateProgressBar();
         }
