@@ -28,11 +28,20 @@ namespace Battle
         private float _shakeEndTime = 0;
 
         [CanBeNull] private Action<string> _deadCallback;
-        private Animator _animator;
+        [CanBeNull] private Action _deadAnimEndCallback;
+        [SerializeField] private Animator _attackAnimator;
+        [SerializeField] private Animator _avatarAnimator;
+
+        [SerializeField] private DamageDealer _damageDealer;
 
         public void SetDeadCallback(Action<string> callback)
         {
             _deadCallback += callback;
+        }
+
+        public void SetDeadAnimEndCallback(Action callback)
+        {
+            _deadAnimEndCallback += callback;
         }
 
         void Start()
@@ -40,7 +49,7 @@ namespace Battle
             UpdateProgressBar();
             _charInfo = GetComponentInChildren<Text>();
             _charInfo.text = _name;
-            _animator = GetComponentInChildren<Animator>();
+            _damageDealer = _attackAnimator.gameObject.GetComponent<DamageDealer>();
         }
         
         public void DealDamage(int damage)
@@ -50,25 +59,30 @@ namespace Battle
             
             Debug.LogFormat(_name + "is damaged!");
             _health -= damage;
-            if (IsDead())
-            {
-                _health = 0;
-                
-                //play dead animation
-                StartCoroutine(Shake(_deadShakeTime));
-            }
-            else
-            {         
-                StartCoroutine(Shake(_shakeTime));
-            }
+            AnimateDamage();
             UpdateProgressBar();
             
         }
 
 
-        public int Attack(){
-            _animator.SetTrigger(_attackType);
-            return _damage;
+        private void AnimateDamage(){
+            if (IsDead())
+            {
+                _health = 0;
+                StartCoroutine(Shake(_deadShakeTime));
+                _deadCallback(_name);
+            }
+            else
+            {         
+                StartCoroutine(Shake(_shakeTime));
+            }
+        }
+
+
+        public void Attack(int prescaler){
+            _attackAnimator.SetTrigger(_attackType);
+            _damageDealer.setDamage(prescaler * _damage);
+            return;
         }
 
         public bool IsDead()
@@ -84,6 +98,9 @@ namespace Battle
 
         private  IEnumerator Shake(float shakeTime)
         {
+            if (_avatarAnimator != null){
+            _avatarAnimator.SetTrigger("Damaged");
+            }
             _shakeEndTime = Time.time + shakeTime;
             Vector2 initPos = _avatar.rectTransform.anchoredPosition;
             int timer = 0;
@@ -119,7 +136,7 @@ namespace Battle
                 gameObject.SetActive(false);
                 if (_deadCallback != null)
                 {
-                    _deadCallback(_name);
+                    _deadAnimEndCallback();
                 }
                 else
                 {

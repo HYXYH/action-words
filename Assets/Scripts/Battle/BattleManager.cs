@@ -15,6 +15,7 @@ namespace Battle
         private float _nextDamageTime = 5;
 
         private bool _isBattleStarted = false;
+        private bool _enemyDead;
         
         [CanBeNull] private Action<bool> _endBattleCallback;
        
@@ -23,7 +24,10 @@ namespace Battle
         {
             _boardGame.SetWordActivationCallback(OnWordActivation);
             _player.SetDeadCallback(OnCharacterDead);
+            _player.SetDeadAnimEndCallback(OnDeadAnimationEnd);
             _enemy.SetDeadCallback(OnCharacterDead);
+            _enemy.SetDeadAnimEndCallback(OnDeadAnimationEnd);
+
         }
 
         private void Update()
@@ -32,13 +36,7 @@ namespace Battle
             if (Time.time > _nextDamageTime && _isBattleStarted)
             {
                 _nextDamageTime = Time.time + _damageTime;
-                int damage = _enemy.Attack();
-                _player.DealDamage(damage);
-                if (_player.IsDead())
-                {
-                    _boardGame.EndBoardGame();
-                    _isBattleStarted = false;
-                }
+                _enemy.Attack(1);
             }
         }
 
@@ -60,14 +58,7 @@ namespace Battle
 
         private void OnWordActivation(string word, List<Thaum> thaums)
         {
-            int damage = _player.Attack();
-            damage *= word.Length;
-            _enemy.DealDamage(damage);
-            if (_enemy.IsDead())
-            {
-                _boardGame.EndBoardGame();
-                _isBattleStarted = false;
-            }
+            _player.Attack(word.Length);
         }
 
         private void OnCharacterDead(string deadName)
@@ -78,13 +69,16 @@ namespace Battle
             {
                 _boardGame.EndBoardGame();
                 _boardGame.gameObject.SetActive(false);
-                bool enemyDead = !(deadName.Equals(_player.Name));
-                _endBattleCallback(enemyDead);
+                _enemyDead = !(deadName.Equals(_player.Name));
             }
             else
             {
                 Debug.Log("_endBattleCallback is null!");
             }
+        }
+
+        private void OnDeadAnimationEnd(){
+            _endBattleCallback(_enemyDead);
             gameObject.SetActive(false);
         }
     }
