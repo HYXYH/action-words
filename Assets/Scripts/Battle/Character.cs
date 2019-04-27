@@ -50,7 +50,7 @@ namespace Battle
             
             Debug.LogFormat(_name + "is damaged!");
             _health -= damage;
-            if (_health < 0)
+            if (IsDead())
             {
                 _health = 0;
                 
