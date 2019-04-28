@@ -8,7 +8,9 @@ using Battle;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private BattleManager _battleManager;
-    [SerializeField] private Text _resultText;
+    [SerializeField] private Text _resultText;  
+
+    [SerializeField] private GameObject _deathPanel;
 
     void Start()
     {
@@ -21,18 +23,20 @@ public class GameManager : MonoBehaviour
     private void OnBattleEnd(bool playerWin)
     {
         // TODO: Implement endbattle subscription with playerWin value in subscription messege
-        /*
+
+        _deathPanel.SetActive(true);
+
         gameObject.SetActive(true);
         if (playerWin)
         {
-            _resultText.text = "Victory!";
+            _resultText.text = "You win!";
         }
         else
         {
-            _resultText.text = "Defeat!";
+            _resultText.text = "You lost!";
         }
-        */
 
-        SceneManager.LoadScene(0);
+
+        //SceneManager.LoadScene(0);
     }
 }

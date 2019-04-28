@@ -416,6 +416,8 @@ MonoBehaviour:
   _shakeAmp: 0.005
   _attackAnimator: {fileID: 2185070304960345248}
   _avatarAnimator: {fileID: 2185070305252378033}
+  _damageDealer: {fileID: 0}
+  _theSoundManager: {fileID: 0}
 --- !u!1 &2828797893339441539
 GameObject:
   m_ObjectHideFlags: 0
@@ -881,6 +883,8 @@ MonoBehaviour:
   _shakeAmp: 0.005
   _attackAnimator: {fileID: 5953461563089304672}
   _avatarAnimator: {fileID: 0}
+  _damageDealer: {fileID: 0}
+  _theSoundManager: {fileID: 0}
 --- !u!1 &4980744771535402932
 GameObject:
   m_ObjectHideFlags: 0

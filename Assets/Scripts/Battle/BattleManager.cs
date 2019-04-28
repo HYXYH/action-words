@@ -10,13 +10,16 @@ namespace Battle
         [SerializeField] private BoardGame _boardGame;
         [SerializeField] private Character _player;
         [SerializeField] private Character _enemy;
+        
+
 
         [SerializeField] private float _damageTime  = 3;
         private float _nextDamageTime = 5;
 
         private bool _isBattleStarted = false;
         private bool _enemyDead;
-        
+
+
         [CanBeNull] private Action<bool> _endBattleCallback;
        
 

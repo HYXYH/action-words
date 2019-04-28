@@ -13,6 +13,7 @@ namespace Battle
         [SerializeField] private int _health;
         [SerializeField] private int _damage;
         [SerializeField] private string _attackType;
+      //  [SerializeField] private AudioClip _soundattackType;
 
         public string Name => _name;
         public int Damage => _damage;
@@ -34,6 +35,8 @@ namespace Battle
 
         [SerializeField] private DamageDealer _damageDealer;
 
+        [SerializeField] private SoundManager _theSoundManager;
+
         public void SetDeadCallback(Action<string> callback)
         {
             _deadCallback += callback;
@@ -46,6 +49,7 @@ namespace Battle
 
         void Start()
         {
+            _theSoundManager = FindObjectOfType<SoundManager>();
             UpdateProgressBar();
             _charInfo = GetComponentInChildren<Text>();
             _charInfo.text = _name;
@@ -56,7 +60,10 @@ namespace Battle
         {
             if (_health == 0)
                 return;
-            
+
+            if (name.Equals("Player"))
+                _theSoundManager.PlaySound("Pain");
+
             Debug.LogFormat(_name + "is damaged!");
             _health -= damage;
             AnimateDamage();
@@ -68,9 +75,13 @@ namespace Battle
         private void AnimateDamage(){
             if (IsDead())
             {
+                _theSoundManager.PlaySound("Death");
+
                 _health = 0;
                 StartCoroutine(Shake(_deadShakeTime));
                 _deadCallback(_name);
+
+
             }
             else
             {         
@@ -82,6 +93,8 @@ namespace Battle
         public void Attack(int prescaler){
             _attackAnimator.SetTrigger(_attackType);
             _damageDealer.setDamage(prescaler * _damage);
+
+            _theSoundManager.PlaySound(_attackType);
             return;
         }
 
