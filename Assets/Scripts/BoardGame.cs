@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class BoardGame : MonoBehaviour, IBoardGame
 {
-    [CanBeNull] private Action<string, List<Thaum>> _wordActivationCallback;
+    [CanBeNull] private Action<string> _wordActivationCallback;
     [CanBeNull] private Action _tetrinoUsedCallback;
     [CanBeNull] private Action _noMovesCallback;
 
@@ -24,17 +24,18 @@ public class BoardGame : MonoBehaviour, IBoardGame
     }
 
 
-    public void SetWordActivationCallback(Action<string, List<Thaum>> callback)
+    public void SetWordActivationCallback(Action<string> callback)
     {
         _wordActivationCallback += callback;
     }
 
     // todo: call this method in WordInput.Activate
+    public void OnWordActivation() { }
     public void CallWordActivationCallback(string word, List<Thaum> thaums)
     {
         if (_wordActivationCallback != null)
         {
-            _wordActivationCallback(word, thaums);
+            _wordActivationCallback(word);
         }
         else
         {

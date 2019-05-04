@@ -7,7 +7,7 @@ namespace Battle
 {
     public class BattleManager : MonoBehaviour, IBattleManager
     {
-        [SerializeField] private BoardGame _boardGame;
+        [SerializeField] private PentaPuzzleManager _boardGame;
         [SerializeField] private Character _player;
         [SerializeField] private Character _enemy;
         
@@ -59,7 +59,7 @@ namespace Battle
         }
         
 
-        private void OnWordActivation(string word, List<Thaum> thaums)
+        private void OnWordActivation(string word)
         {
             _player.Attack(word.Length);
         }
@@ -71,7 +71,6 @@ namespace Battle
             if (_endBattleCallback != null)
             {
                 _boardGame.EndBoardGame();
-                _boardGame.gameObject.SetActive(false);
                 _enemyDead = !(deadName.Equals(_player.Name));
             }
             else

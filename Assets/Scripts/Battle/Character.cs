@@ -63,8 +63,7 @@ namespace Battle
 
             if (name.Equals("Player"))
                 _theSoundManager.PlaySound("Pain");
-
-            Debug.LogFormat(_name + "is damaged!");
+            
             _health -= damage;
             AnimateDamage();
             UpdateProgressBar();
