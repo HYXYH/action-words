@@ -10,33 +10,45 @@ public class ScrollManager : MonoBehaviour
         Back
     }
 
-    [SerializeField] private ScrollPlacement[] _scrolls;
-    
-    void Start()
+    [SerializeField] private ScrollPlacement[] _scrollPlacements;
+
+
+    void Awake()
     {
-        
+        foreach (ScrollPlacement sp in _scrollPlacements)
+        {
+            sp.GetScroll().AddThrownAwayCallback(Swap);
+        }
     }
 
-    public void Swap()
+    public void ChangeScroll(Pentagram pentagram)
     {
-        Pentagram p0 = _scrolls[0].GetPentagram();
-        Pentagram p1 = _scrolls[1].GetPentagram();
-
-        _scrolls[0].SetPentagram(p1);
-        _scrolls[1].SetPentagram(p0);
+        PrepareScroll(PentagramPosition.Back, pentagram);
+        _scrollPlacements[(int)PentagramPosition.Front]
+            .GetScroll()
+            .GetComponent<Animator>()
+            .SetTrigger("ThrownAway");
     }
 
-    public void PreparePentagram(PentagramPosition pentagramPosition)
+    private void Swap(int thisIsNotUsed)
     {
-        Pentagram pentagram = _scrolls[(int)pentagramPosition].GetPentagram();
+        Scroll p0 = _scrollPlacements[0].GetScroll();
+        Scroll p1 = _scrollPlacements[1].GetScroll();
 
-        char[] letters = { 'к', 'о', 'т', 'л', 'о', 'л' };
-        string[] words = { "кот", "кто", "ток", "ок", "отк" };
-        pentagram.Create(letters, words, 400f);
+        _scrollPlacements[0].SetPentagram(p1);
+        _scrollPlacements[1].SetPentagram(p0);
     }
 
-    public Pentagram GetActivePentagram()
+    private void PrepareScroll(PentagramPosition pentagramPosition, Pentagram pentagram)
     {
-        return _scrolls[0].GetPentagram();
+        Scroll scroll = _scrollPlacements[(int)pentagramPosition].GetScroll();
+        scroll.ReturnLettersToPool();
+        scroll.Load(pentagram, 400f);
+    }
+
+
+    public Scroll GetActivePentagram()
+    {
+        return _scrollPlacements[0].GetScroll();
     }
 }

@@ -26,8 +26,7 @@ public class Liner : MonoBehaviour
     
     private void AddNode(PentaLetter letter)
     {
-        Debug.Log("ADDING NODE");
-
+        Debug.Log("ADDING NODE WITH LETTER " + letter.GetLetter() + "(GameObject " + letter.name + ")");
         _nodesCount++;
         _lineRenderer.positionCount = _nodesCount;
 
@@ -39,8 +38,6 @@ public class Liner : MonoBehaviour
 
     private void ClearNodes(PentaLetter lastLetter)
     {
-        Debug.Log("CLEARED NODES");
-
         _nodesCount = 0;
         _lineRenderer.positionCount = 0;
     }

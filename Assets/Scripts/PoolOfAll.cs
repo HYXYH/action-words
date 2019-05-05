@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PoolOfAll : MonoBehaviour
 {
-    [SerializeField] private List<PentaLetter> _letters;
+    [SerializeField] private List<PentaLetter>  _letters;
+    [SerializeField] private Transform         _lettersHolder;
 
     protected void Start()
     {
@@ -20,5 +21,17 @@ public class PoolOfAll : MonoBehaviour
     }
 
     public void Store (PentaLetter letter)
-    { _letters.Add(letter); }
+    {
+        _letters.Add(letter);
+        letter.transform.SetParent(_lettersHolder);
+        letter.transform.position = Vector2.zero;
+        //letter.GetComponent<RectTransform>().offsetMin = Vector2.zero;
+        //letter.GetComponent<RectTransform>().offsetMax = Vector2.zero;
+    }
+
+    public void Store (PentaLetter[] letters)
+    {
+        int n = letters.Length;
+        for (int i = 0; i < n; i++) Store(letters[i]);
+    }
 }

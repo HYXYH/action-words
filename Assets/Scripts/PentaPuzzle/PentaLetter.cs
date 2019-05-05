@@ -15,14 +15,14 @@ public class PentaLetter : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 
     private char _letter;   public char GetLetter() { return _letter; }
 
-    private bool _selected;
+    private bool _selectable;
 
     private Action< PentaLetter > _LetterSelected;
     private Action< PentaLetter > _DragEnded;
 
     void Awake()
     {
-        _selected = false;
+        _selectable = true;
         _manager = FindObjectOfType<PentaPuzzleManager>();
         _liner = FindObjectOfType<Liner>();
         _text  = GetComponent<Text>();
@@ -88,15 +88,20 @@ public class PentaLetter : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     private void TryToSelect()
     {
         Debug.Log(this.name + " position: " + this.transform.position);
-        if (!_selected)
+        if (_selectable)
         {
-            _selected = true;
+            _selectable = false;
             OnLetterSelected();
         }
     }
 
     public void Unselect()
     {
-        _selected = false;
+        _selectable = true;
+    }
+
+    public void SetSelectable (bool selectable)
+    {
+        _selectable = selectable;
     }
 }

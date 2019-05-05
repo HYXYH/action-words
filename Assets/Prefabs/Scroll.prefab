@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8600741882019965789}
   - component: {fileID: 8600741882019965778}
   - component: {fileID: 4558131568164649438}
+  - component: {fileID: 8016492944664003019}
   m_Layer: 5
   m_Name: Scroll
   m_TagString: Untagged
@@ -87,3 +88,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8d988fbb35f81b4e9efc06189f9586b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &8016492944664003019
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8600741882019965776}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 17cd260a6340f7647a929455c1578908, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
