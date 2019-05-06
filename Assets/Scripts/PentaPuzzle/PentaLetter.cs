@@ -15,24 +15,26 @@ public class PentaLetter : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 
     private char _letter;   public char GetLetter() { return _letter; }
 
-    private bool _selectable;
+    private int             _nNeighbourLetters;
+    private PentaLetter[]   _neighbourLetters;
 
     private Action< PentaLetter > _LetterSelected;
     private Action< PentaLetter > _DragEnded;
 
     void Awake()
     {
-        _selectable = true;
         _manager = FindObjectOfType<PentaPuzzleManager>();
         _liner = FindObjectOfType<Liner>();
         _text  = GetComponent<Text>();
     }
 
 
-    public void Construct (char letter)
+    public void Construct (char letter, int lettersInPentagram)
     {
         _letter = letter;
         _text.text = "" + letter;
+
+        _neighbourLetters = new PentaLetter[lettersInPentagram - 1];
     }
 
 
@@ -64,7 +66,7 @@ public class PentaLetter : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        TryToSelect();
+        TryToSelect(null);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -78,30 +80,42 @@ public class PentaLetter : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (eventData.dragging)
+        if (eventData.dragging && TryToSelect(eventData.pointerDrag.GetComponent<PentaLetter>()))
         {
             eventData.pointerDrag = this.gameObject;
-            TryToSelect();
         }
     }
 
-    private void TryToSelect()
+    private bool TryToSelect(PentaLetter previousLetter)
     {
-        Debug.Log(this.name + " position: " + this.transform.position);
-        if (_selectable)
+        if (previousLetter != null)
         {
-            _selectable = false;
-            OnLetterSelected();
+            if (!previousLetter.AddToNeighbours(this))
+            { return false; }
+            AddToNeighbours(previousLetter);
         }
+        OnLetterSelected();
+        return true;
     }
 
     public void Unselect()
     {
-        _selectable = true;
+        _nNeighbourLetters = 0;
     }
 
-    public void SetSelectable (bool selectable)
+    public bool AddToNeighbours(PentaLetter letter)
     {
-        _selectable = selectable;
+        for (int i = 0; i < _nNeighbourLetters; i++)
+        {
+            if (_neighbourLetters[i] == letter)
+            {
+                Debug.Log(this._letter + " had " + letter._letter + " as neighbour.");
+                return false;
+            }
+        }
+
+        Debug.Log(this._letter + " added " + letter._letter + " to neighbours.");
+        _neighbourLetters[_nNeighbourLetters++] = letter;
+        return true;
     }
 }

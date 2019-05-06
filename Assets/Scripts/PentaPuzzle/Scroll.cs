@@ -63,7 +63,7 @@ public class Scroll : MonoBehaviour
         {
             Debug.Log("Placing letter №" + i + ": " + pentagram.Letters()[i]);
             _pentaLetters[i] = _pool.GetLetter();
-            _pentaLetters[i].Construct(pentagram.Letters()[i]);
+            _pentaLetters[i].Construct(pentagram.Letters()[i], nLetters);
 
 
             RectTransform rt = _pentaLetters[i].GetComponent<RectTransform>();
