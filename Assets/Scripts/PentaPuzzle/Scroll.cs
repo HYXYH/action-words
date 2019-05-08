@@ -10,11 +10,10 @@ public class Scroll : MonoBehaviour
     public Action<int>      _ThrownAway;
     
     private PoolOfAll _pool;
-    
+    private Animator _anim;
+
     private Pentagram _pentagram;
     private PentaLetter[] _pentaLetters;
-
-    private Animator _anim;
 
     private List<PentaLetter> _selectedLetters;
     private string _currentWord;
@@ -43,9 +42,10 @@ public class Scroll : MonoBehaviour
     }
 
 
-    public void Load(Pentagram pentagram, float radius)
+    public void Load(Pentagram pentagram, float radius, float letterSize)
     {
         _pentagram = pentagram;
+
 
         int nLetters = pentagram.Letters().Length;
         float turningAngle = 2 * Mathf.PI / nLetters;
@@ -68,6 +68,11 @@ public class Scroll : MonoBehaviour
 
             RectTransform rt = _pentaLetters[i].GetComponent<RectTransform>();
             rt.SetParent(this.transform);
+
+
+            rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, letterSize);
+            rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, letterSize);
+
             rt.anchoredPosition3D = new Vector3(letterPosition.x, letterPosition.y, 0);
             letterPosition = letterPosition + stepVector;
 
@@ -94,7 +99,6 @@ public class Scroll : MonoBehaviour
     private void SelectLetter(PentaLetter letter)
     {
         _selectedLetters.Add(letter);
-        //if (_selectedLetters.Count >= 3) _selectedLetters.
         _currentWord += letter.GetLetter();
     }
 

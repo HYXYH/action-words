@@ -22,10 +22,10 @@ namespace Battle
         [SerializeField] private  Image _avatar;
         private  Text _charInfo;
 
-        [SerializeField] private float _shakeTime = 1;
-        [SerializeField] private float _deadShakeTime = 1;
+        [SerializeField] private float _shakeTime = 0.1f;
+        [SerializeField] private float _deadShakeTime = 0.5f;
         [SerializeField] private float _shakeSpeed = 30;
-        [SerializeField] private float _shakeAmp = 0.5f;
+        [SerializeField] private float _shakeAmp = 0.8f;
         private float _shakeEndTime = 0;
 
         [CanBeNull] private Action<string> _deadCallback;

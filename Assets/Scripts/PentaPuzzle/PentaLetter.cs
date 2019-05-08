@@ -23,6 +23,11 @@ public class PentaLetter : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 
     void Awake()
     {
+        float letterWidth = (float)Screen.currentResolution.width / 15;
+        RectTransform rt = GetComponent<RectTransform>();
+        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, letterWidth);
+        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, letterWidth);
+
         _manager = FindObjectOfType<PentaPuzzleManager>();
         _liner = FindObjectOfType<Liner>();
         _text  = GetComponent<Text>();
@@ -105,16 +110,13 @@ public class PentaLetter : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 
     public bool AddToNeighbours(PentaLetter letter)
     {
+        if (letter == this) return false;
+
         for (int i = 0; i < _nNeighbourLetters; i++)
         {
-            if (_neighbourLetters[i] == letter)
-            {
-                Debug.Log(this._letter + " had " + letter._letter + " as neighbour.");
-                return false;
-            }
+            if (_neighbourLetters[i] == letter) return false;
         }
-
-        Debug.Log(this._letter + " added " + letter._letter + " to neighbours.");
+        
         _neighbourLetters[_nNeighbourLetters++] = letter;
         return true;
     }

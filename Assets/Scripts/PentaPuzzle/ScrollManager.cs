@@ -13,6 +13,9 @@ public class ScrollManager : MonoBehaviour
     [SerializeField] private ScrollPlacement[] _scrollPlacements;
 
 
+    private float _pentagramRelativeRadius = 0.333f;
+    private float _letterRelativeSize = 0.200f;
+
     void Awake()
     {
         foreach (ScrollPlacement sp in _scrollPlacements)
@@ -43,7 +46,14 @@ public class ScrollManager : MonoBehaviour
     {
         Scroll scroll = _scrollPlacements[(int)pentagramPosition].GetScroll();
         scroll.ReturnLettersToPool();
-        scroll.Load(pentagram, 400f);
+
+
+        float screenWidth = GetComponent<RectTransform>().rect.width;
+        //float screenWidth = Screen.width; Debug.Log("ScreenWidth " + screenWidth);
+        float radius = screenWidth * _pentagramRelativeRadius;
+        float letterSize = screenWidth * _letterRelativeSize; Debug.Log("letterSize " + letterSize);
+
+        scroll.Load(pentagram, radius, letterSize);
     }
 
 
