@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private BattleManager _battleManager;
     [SerializeField] private Text _resultText;  
+    [SerializeField] private Text _actionText;  
 
     [SerializeField] private GameObject _deathPanel;
 
@@ -30,10 +31,13 @@ public class GameManager : MonoBehaviour
         if (playerWin)
         {
             _resultText.text = "You win!";
+            _actionText.text = "Next Level";
         }
         else
         {
             _resultText.text = "You lost!";
+            _actionText.text = "Retry";
+
         }
 
 

@@ -7,6 +7,7 @@ using UnityEngine;
 public class PentaPuzzleManager : MonoBehaviour, IBoardGame
 {
     private Action<string> _wordActivationCallback;
+    private Action _nextScrollCallback;
 
     [SerializeField] private Animator _rewardAnimator;
     [SerializeField] private GameObject _changeScrollButton;
@@ -60,6 +61,9 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
     public void SetWordActivationCallback(Action<string> callback)
     { _wordActivationCallback += callback; }
 
+    public void SetNextScrollCallback(Action callback)
+    { _nextScrollCallback += callback; }
+
     public void OnWordActivation(string word)
     {
         string[] s = { "Flame1", "Explosion" };
@@ -76,6 +80,7 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
     {
         _scrollManager.ChangeScroll(_pentaLoader.GetNextPentagram());
         if (_pentaLoader.OutOfPentagrams()) { _changeScrollButton.SetActive(false); }
+        _nextScrollCallback();
     }
 
 

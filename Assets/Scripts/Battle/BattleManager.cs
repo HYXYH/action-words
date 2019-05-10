@@ -17,6 +17,9 @@ namespace Battle
         [SerializeField] private Character _player;
         [SerializeField] private Character _enemy;
 
+        [SerializeField] private Text _playerActivatedWords;
+        [SerializeField] private Text _enemyActivatedWords;
+
         [SerializeField] private TurnLabel[] turnLabels;
 
         private bool _isPlayerTurn = true;
@@ -29,6 +32,7 @@ namespace Battle
         private void OnEnable()
         {
             _boardGame.SetWordActivationCallback(OnWordActivation);
+            _boardGame.SetNextScrollCallback(OnSkipScroll);
             _player.SetDeadCallback(OnCharacterDead);
             _player.SetDeadAnimEndCallback(OnDeadAnimationEnd);
             _player.SetEndTurnCallback(OnEndTurn);
@@ -69,9 +73,11 @@ namespace Battle
                 _bubbleText.text = word.ToUpper() + "!";
                 _bubbleAnimator.SetTrigger("Show");
                 _player.Attack(word.Length);
+                _playerActivatedWords.text = _playerActivatedWords.text + word + "\n";
             }
             else {
                 _enemy.Attack(word.Length);
+                _enemyActivatedWords.text = _enemyActivatedWords.text + word + "\n";
             }
         }
 
@@ -116,6 +122,11 @@ namespace Battle
                     StartCoroutine(_boardGame.EmulateWordActivation(words[0]));
                     }
             }
+        }
+
+        private void OnSkipScroll(){
+            _playerActivatedWords.text = "";
+            _enemyActivatedWords.text = "";
         }
     }
 }
