@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,18 +9,26 @@ namespace Battle
 {
 public class DamageDealer : MonoBehaviour
 {
-	[SerializeField] private CanvasGroup _puzzleCanvas;
+	[SerializeField] private CanvasGroup _boardCanvas;
 	[SerializeField] private Character _attackTarget;
 	[SerializeField] private float _alpha = 0.2f;
 	[SerializeField] private int _damage;
 
+	[CanBeNull] private Action _endTurnCallback;
+
+	public void SetEndTurnCallback(Action callback)
+    {
+		_endTurnCallback += callback;
+    }
+
 	public void makeCanvasTransparent(){
-		_puzzleCanvas.gameObject.SetActive(false);
+		_boardCanvas.gameObject.SetActive(false);
 		// _puzzleCanvas.alpha = _alpha;
 	}
 
 	public void makeCanvasVisible(){
-		_puzzleCanvas.gameObject.SetActive(true);
+		_boardCanvas.gameObject.SetActive(true);
+		_endTurnCallback();
 		// _puzzleCanvas.alpha = 1;
 	}
 

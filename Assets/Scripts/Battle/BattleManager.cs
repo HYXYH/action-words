@@ -8,17 +8,13 @@ namespace Battle
     public class BattleManager : MonoBehaviour, IBattleManager
     {
         [SerializeField] private PentaPuzzleManager _boardGame;
+        [SerializeField] private CanvasGroup _boardCanvas;
         [SerializeField] private Character _player;
         [SerializeField] private Character _enemy;
-        
 
-
-        [SerializeField] private float _damageTime  = 3;
-        private float _nextDamageTime = 5;
-
+        private bool _isPlayerTurn = true;
         private bool _isBattleStarted = false;
         private bool _enemyDead;
-
 
         [CanBeNull] private Action<bool> _endBattleCallback;
        
@@ -28,25 +24,22 @@ namespace Battle
             _boardGame.SetWordActivationCallback(OnWordActivation);
             _player.SetDeadCallback(OnCharacterDead);
             _player.SetDeadAnimEndCallback(OnDeadAnimationEnd);
+            _player.SetEndTurnCallback(OnEndTurn);
             _enemy.SetDeadCallback(OnCharacterDead);
             _enemy.SetDeadAnimEndCallback(OnDeadAnimationEnd);
-
+            _enemy.SetEndTurnCallback(OnEndTurn);
         }
 
         private void Update()
         {
-            // Enemy deals damage to player
-            if (Time.time > _nextDamageTime && _isBattleStarted)
-            {
-                _nextDamageTime = Time.time + _damageTime;
-                _enemy.Attack(1);
-            }
         }
 
-        public void StartBattle()
+        public void StartBattle(bool isPlayerTurn)
         {
+            _isPlayerTurn = isPlayerTurn;
+            _boardCanvas.blocksRaycasts = _isPlayerTurn;
+
             gameObject.SetActive(true);
-            _nextDamageTime = Time.time + _damageTime;
             _isBattleStarted = true;
             _player.gameObject.SetActive(true);
             _enemy.gameObject.SetActive(true);
@@ -61,7 +54,12 @@ namespace Battle
 
         private void OnWordActivation(string word)
         {
-            _player.Attack(word.Length);
+            if (_isPlayerTurn){
+                _player.Attack(word.Length);
+            }
+            else {
+                _enemy.Attack(word.Length);
+            }
         }
 
         private void OnCharacterDead(string deadName)
@@ -82,6 +80,18 @@ namespace Battle
         private void OnDeadAnimationEnd(){
             _endBattleCallback(_enemyDead);
             gameObject.SetActive(false);
+        }
+
+
+        private void OnEndTurn(){
+            _isPlayerTurn = !_isPlayerTurn;
+            _boardCanvas.blocksRaycasts = _isPlayerTurn;
+            
+            // Enemy deals damage to player
+            // if (!_isPlayerTurn)
+            // {
+            //     _enemy.Attack(1);
+            // }
         }
     }
 }

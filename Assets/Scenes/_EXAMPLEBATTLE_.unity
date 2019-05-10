@@ -1014,7 +1014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f4dd2b93766a44879b971c134d66d38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _puzzleCanvas: {fileID: 2082317544}
+  _boardCanvas: {fileID: 2082317544}
   _attackTarget: {fileID: 5592022215764615255}
   _alpha: 0.2
   _damage: 0
@@ -3777,6 +3777,11 @@ PrefabInstance:
       propertyPath: DeathPanel
       value: 
       objectReference: {fileID: 1218850581}
+    - target: {fileID: 2828797893732088970, guid: 5675d6486e904834dbdbaf071f17e766,
+        type: 3}
+      propertyPath: _boardCanvas
+      value: 
+      objectReference: {fileID: 2082317544}
     - target: {fileID: 2828797893144623981, guid: 5675d6486e904834dbdbaf071f17e766,
         type: 3}
       propertyPath: _theSoundManager
@@ -3810,7 +3815,7 @@ PrefabInstance:
     - target: {fileID: 2828797893144623981, guid: 5675d6486e904834dbdbaf071f17e766,
         type: 3}
       propertyPath: _damage
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6939654891795186947, guid: 5675d6486e904834dbdbaf071f17e766,
         type: 3}
@@ -4082,7 +4087,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f4dd2b93766a44879b971c134d66d38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _puzzleCanvas: {fileID: 2082317544}
+  _boardCanvas: {fileID: 2082317544}
   _attackTarget: {fileID: 762702057013321273}
   _alpha: 0.2
   _damage: 0

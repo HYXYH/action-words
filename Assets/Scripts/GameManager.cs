@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     {
         _battleManager.SetBattleEndCallback(OnBattleEnd);
         gameObject.SetActive(false);
-        _battleManager.StartBattle();
+        _battleManager.StartBattle(true);
     }
 
 

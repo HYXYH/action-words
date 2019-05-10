@@ -30,6 +30,7 @@ namespace Battle
 
         [CanBeNull] private Action<string> _deadCallback;
         [CanBeNull] private Action _deadAnimEndCallback;
+        
         [SerializeField] private Animator _attackAnimator;
         [SerializeField] private Animator _avatarAnimator;
 
@@ -47,6 +48,13 @@ namespace Battle
             _deadAnimEndCallback += callback;
         }
 
+        public void SetEndTurnCallback(Action callback)
+        {   if (_damageDealer == null){
+             _damageDealer = _attackAnimator.gameObject.GetComponent<DamageDealer>();
+            }
+            _damageDealer.SetEndTurnCallback(callback);
+        }
+
         void Start()
         {
             _theSoundManager = FindObjectOfType<SoundManager>();
@@ -58,9 +66,6 @@ namespace Battle
         
         public void DealDamage(int damage)
         {
-            if (_health == 0)
-                return;
-
             if (name.Equals("Player"))
                 _theSoundManager.PlaySound("Pain");
             
@@ -79,8 +84,6 @@ namespace Battle
                 _health = 0;
                 StartCoroutine(Shake(_deadShakeTime));
                 _deadCallback(_name);
-
-
             }
             else
             {         

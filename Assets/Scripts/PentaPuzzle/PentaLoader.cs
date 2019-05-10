@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PentaLoader : MonoBehaviour
 {
-    private string _pentagramsFilePath = "Assets\\Resources\\levels.txt";
+    private string _pentagramsFilePath = "Assets/Resources/levels.txt";
 
     private int _pentaCounter;
     private Pentagram[] _pentagrams;
