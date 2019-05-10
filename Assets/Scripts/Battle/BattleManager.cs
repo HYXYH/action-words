@@ -66,7 +66,7 @@ namespace Battle
         }
         
 
-        private void OnWordActivation(string word)
+        private void OnWordActivation(string word, SpellEffect effect)
         {
             if (_isPlayerTurn){
                 _player.Attack(word.Length);
