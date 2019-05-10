@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Scroll : MonoBehaviour
 {
-    public Action<string>   _SpellActivated;
+    public Action<string, int[]>   _SpellActivated;
     public Action<int>      _ThrownAway;
     
     private PoolOfAll _pool;
@@ -17,14 +17,17 @@ public class Scroll : MonoBehaviour
 
     private List<PentaLetter> _selectedLetters;
     private string _currentWord;                    public string GetSelectedWord() { return _currentWord; }
-
+    private int[] _letterNumbersSequence;
 
     
-    public void AddSpellActivatedCallBack(Action<string> callback)
+    public void AddSpellActivatedCallBack(Action<string, int[]> callback)
     { _SpellActivated += callback; }
 
     public void OnSpellActivated()
-    { _SpellActivated(_currentWord); }
+    {
+        GetLetterNumbersSequence();
+        _SpellActivated(_currentWord, _letterNumbersSequence);
+    }
 
 
     public void AddThrownAwayCallback(Action<int> callback)
@@ -36,6 +39,7 @@ public class Scroll : MonoBehaviour
 
     public void Awake()
     {
+        _letterNumbersSequence = new int[16];
         _anim = GetComponent<Animator>();
         _selectedLetters = new List<PentaLetter>();
         _pool = FindObjectOfType<PoolOfAll>();
@@ -45,7 +49,6 @@ public class Scroll : MonoBehaviour
     public void Load(Pentagram pentagram, float radius, float letterSize)
     {
         _pentagram = pentagram;
-
 
         int nLetters = pentagram.Letters().Length;
         float turningAngle = 2 * Mathf.PI / nLetters;
@@ -97,31 +100,7 @@ public class Scroll : MonoBehaviour
     }
 
     
-    public IEnumerator SelectWord(string word)
-    {
-        bool letterFound = false;
-        PentaLetter previousLetter = null;
-        word = word.ToLower();
-
-        foreach (char letter in word)
-        {
-            letterFound = false;
-            foreach (PentaLetter pentaLetter in _pentaLetters)
-            {
-                if (pentaLetter.GetLetter() == letter)
-                {
-                    letterFound = true;
-                    bool nextLetterIsSelectable = pentaLetter.TryToSelect(previousLetter);
-                    yield return new WaitForSecondsRealtime(0.3f);
-                    if (!nextLetterIsSelectable) { yield break; }
-
-                    previousLetter = pentaLetter;
-                    break;
-                }
-            }
-            if (!letterFound) yield break;
-        }
-    }
+    
 
 
 
@@ -150,6 +129,27 @@ public class Scroll : MonoBehaviour
     }
 
     
+    private int[] GetLetterNumbersSequence()
+    {
+        _letterNumbersSequence = new int[_currentWord.Length];
+
+        
+        for (int i = 0; i < _letterNumbersSequence.Length; i++)
+        {
+            for (int j = 0; j < _pentaLetters.Length; j++)
+            {
+                if (_selectedLetters[i] == _pentaLetters[j])
+                {
+                    _letterNumbersSequence[i] = j;
+                    break;
+                }
+            }
+        }
+
+        return _letterNumbersSequence;
+    }
+
+
     private void RotateVector(ref Vector2 vector, float angle)
     {
         float newX = vector.x * Mathf.Cos(angle) - vector.y * Mathf.Sin(angle);
@@ -157,5 +157,33 @@ public class Scroll : MonoBehaviour
 
         vector.x = newX;
         vector.y = newY;
+    }
+
+
+
+    public IEnumerator SelectWord(string word)
+    {
+        bool letterFound = false;
+        PentaLetter previousLetter = null;
+        word = word.ToLower();
+
+        foreach (char letter in word)
+        {
+            letterFound = false;
+            foreach (PentaLetter pentaLetter in _pentaLetters)
+            {
+                if (pentaLetter.GetLetter() == letter)
+                {
+                    letterFound = true;
+                    bool nextLetterIsSelectable = pentaLetter.TryToSelect(previousLetter);
+                    yield return new WaitForSecondsRealtime(0.3f);
+                    if (!nextLetterIsSelectable) { yield break; }
+
+                    previousLetter = pentaLetter;
+                    break;
+                }
+            }
+            if (!letterFound) yield break;
+        }
     }
 }

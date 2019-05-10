@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PentaPuzzleManager : MonoBehaviour, IBoardGame
 {
-    private Action<string> _wordActivationCallback;
+    private Action<string, SpellEffect> _wordActivationCallback;
     private Action _nextScrollCallback;
 
     [SerializeField] private Animator _rewardAnimator;
@@ -55,10 +55,10 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
 
     public void EndBoardGame()
     {
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
-    public void SetWordActivationCallback(Action<string> callback)
+    public void SetWordActivationCallback(Action<string, SpellEffect> callback)
     {
         _wordActivationCallback = null;
         _wordActivationCallback += callback;
@@ -69,8 +69,8 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
         _nextScrollCallback = null;
         _nextScrollCallback += callback;
     }
-    
-    public void OnWordActivation(string word)
+
+    public void OnWordActivation(string word, int[] letterNumbersSequence)
     {
         string[] s = { "Flame1", "Explosion" };
         if (word.Length >= 5)
@@ -78,9 +78,34 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
             int i = UnityEngine.Random.Range((int)0, 2);
             _rewardAnimator.SetTrigger(s[i]);
         }
-        _wordActivationCallback(word);
+        
+
+        _wordActivationCallback(word, EffectOfSequence(word.Length, letterNumbersSequence));
     }
 
+
+    private SpellEffect EffectOfSequence(int wordLength, int[] sequence)
+    {
+        // Less than 3 letters -> Stun
+        if (wordLength <= 2) return SpellEffect.Stun;
+
+
+        //Cycle -> Shield
+        for (int i = 0; i < wordLength; i++)
+        {
+            for (int j = i+1; j < wordLength; j++)
+            {
+                if (sequence[i] == sequence[j])
+                {
+                    Debug.Log("SHIELD!");
+                    return SpellEffect.Shield;
+                }
+            }
+        }
+
+        //None -> None
+        return SpellEffect.None;
+    }
 
     public void NextScroll()
     {
@@ -106,15 +131,13 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
         if (word != activeScroll.GetSelectedWord())
         {
             Debug.LogError("Somehow word \"" + word + " couldn't have been selected in a pentagram, but the Mage doesn't give a fuck");
-
             yield break;
         }
 
         activeScroll.GetPentagram().TryToUseWord(word);
         activeScroll.UnselectLetters();
         _liner.ClearNodes(null);
-        // OnWordActivation(word);
-        _wordActivationCallback(word);
+        _wordActivationCallback(word, SpellEffect.None);
     }
 
     public void ZARUBA()

@@ -91,7 +91,6 @@ namespace Battle
             _endBattleCallback += callback;
         }
         
-
         // todo: move to character, AI should depend on boss.
         private void enemyAction(){
             if (_enemy.IsDead())
@@ -108,7 +107,8 @@ namespace Battle
                     }
         }
 
-        private void OnWordActivation(string word)
+
+        private void OnWordActivation(string word, SpellEffect effect)
         {
             if (_isPlayerTurn){
 
