@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 namespace Battle
 {
     public class BattleManager : MonoBehaviour, IBattleManager
     {
+        [SerializeField] private Animator _bubbleAnimator;
+        [SerializeField] private Text _bubbleText;
+
         [SerializeField] private PentaPuzzleManager _boardGame;
         [SerializeField] private CanvasGroup _boardCanvas;
         [SerializeField] private Character _player;
@@ -60,6 +65,9 @@ namespace Battle
             else {
                 _enemy.Attack(word.Length);
             }
+            _bubbleText.text = word.ToUpper() + "!";
+            _bubbleAnimator.SetTrigger("Show");
+            _player.Attack(word.Length);
         }
 
         private void OnCharacterDead(string deadName)

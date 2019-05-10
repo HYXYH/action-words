@@ -91,7 +91,7 @@ public class PentaLetter : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         }
     }
 
-    private bool TryToSelect(PentaLetter previousLetter)
+    public bool TryToSelect(PentaLetter previousLetter)
     {
         if (previousLetter != null)
         {
