@@ -94,13 +94,15 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
 
         if (word != activeScroll.GetSelectedWord())
         {
-            Debug.LogError("Somehow word \"" + word + " couldn't have been selected in a pentagram.");
+            Debug.LogError("Somehow word \"" + word + " couldn't have been selected in a pentagram, but the Mage doesn't give a fuck");
             yield break;
         }
 
         activeScroll.GetPentagram().TryToUseWord(word);
         activeScroll.UnselectLetters();
         _liner.ClearNodes(null);
+        // OnWordActivation(word);
+        _wordActivationCallback(word);
     }
 
     public void ZARUBA()

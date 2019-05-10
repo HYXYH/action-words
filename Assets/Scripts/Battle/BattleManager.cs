@@ -17,6 +17,8 @@ namespace Battle
         [SerializeField] private Character _player;
         [SerializeField] private Character _enemy;
 
+        [SerializeField] private TurnLabel[] turnLabels;
+
         private bool _isPlayerTurn = true;
         private bool _isBattleStarted = false;
         private bool _enemyDead;
@@ -43,6 +45,9 @@ namespace Battle
         {
             _isPlayerTurn = isPlayerTurn;
             _boardCanvas.blocksRaycasts = _isPlayerTurn;
+            foreach(var turnLabel in turnLabels){
+                turnLabel.setTurn(_isPlayerTurn);
+            }
 
             gameObject.SetActive(true);
             _isBattleStarted = true;
@@ -61,13 +66,13 @@ namespace Battle
         {
             if (_isPlayerTurn){
                 _player.Attack(word.Length);
+                _bubbleText.text = word.ToUpper() + "!";
+                _bubbleAnimator.SetTrigger("Show");
+                _player.Attack(word.Length);
             }
             else {
                 _enemy.Attack(word.Length);
             }
-            _bubbleText.text = word.ToUpper() + "!";
-            _bubbleAnimator.SetTrigger("Show");
-            _player.Attack(word.Length);
         }
 
         private void OnCharacterDead(string deadName)
@@ -95,11 +100,22 @@ namespace Battle
             _isPlayerTurn = !_isPlayerTurn;
             _boardCanvas.blocksRaycasts = _isPlayerTurn;
             
+            foreach(var turnLabel in turnLabels){
+                turnLabel.setTurn(_isPlayerTurn);
+            }
+
             // Enemy deals damage to player
-            // if (!_isPlayerTurn)
-            // {
-            //     _enemy.Attack(1);
-            // }
+            if (!_isPlayerTurn)
+            {
+                List<string> words = _boardGame.GetSelectableWords();
+                if (words.Count > 0)
+                    StartCoroutine(_boardGame.EmulateWordActivation(words[0]));
+                else{
+                    _boardGame.NextScroll();
+                    words = _boardGame.GetSelectableWords();
+                    StartCoroutine(_boardGame.EmulateWordActivation(words[0]));
+                    }
+            }
         }
     }
 }
