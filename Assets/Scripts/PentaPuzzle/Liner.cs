@@ -23,6 +23,8 @@ public class Liner : MonoBehaviour
         }
     }
 
+
+
     
     private void AddNode(PentaLetter letter)
     {
@@ -35,7 +37,7 @@ public class Liner : MonoBehaviour
         _lineRenderer.SetPosition(_nodesCount-1, letterPos);
     }
 
-    private void ClearNodes(PentaLetter lastLetter)
+    public void ClearNodes(PentaLetter lastLetter)
     {
         _nodesCount = 0;
         _lineRenderer.positionCount = 0;

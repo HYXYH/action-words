@@ -6,13 +6,15 @@ using UnityEngine;
 
 public class PentaPuzzleManager : MonoBehaviour, IBoardGame
 {
-    [CanBeNull] private Action<string> _wordActivationCallback;
+    private Action<string> _wordActivationCallback;
 
+    [SerializeField] private Animator _rewardAnimator;
     [SerializeField] private GameObject _changeScrollButton;
 
     private PentaLoader _pentaLoader;
     private PoolOfAll _pool;
     private ScrollManager _scrollManager;
+    private Liner _liner;
 
     //private int _pentagramCounter;
     //private Pentagram[] _pentagrams;
@@ -20,12 +22,13 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
     private void Awake()
     {
         //_pentagramCounter = 0;
-
+        _liner = FindObjectOfType<Liner>();
         _pentaLoader = GetComponent<PentaLoader>();
         _pool = GetComponentInChildren<PoolOfAll>();
         _scrollManager = GetComponentInChildren<ScrollManager>();
 
-        if (!_pool || !_scrollManager) { Debug.LogError("PuzzleManager couldn't find something."); }
+        if (!_liner || !_pentaLoader || !_pool || !_scrollManager)
+        { Debug.LogError("PuzzleManager couldn't find something."); }
 
         Scroll[] pents = FindObjectsOfType<Scroll>();
         foreach (Scroll pent in pents)
@@ -46,7 +49,7 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
         string[] words2 = { "зона", "за", "он", "назо", "оз" };
         _pentagrams[1] = new Pentagram(letters2, words2);
         */
-        NextPentagram();
+        NextScroll();
     }
 
     public void EndBoardGame()
@@ -58,19 +61,54 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
     { _wordActivationCallback += callback; }
 
     public void OnWordActivation(string word)
-    { _wordActivationCallback(word); }
-
-
-    public void NextPentagram()
     {
-        /*
-        _scrollManager.ChangeScroll(_pentagrams[_pentagramCounter]);
-        _pentagramCounter++;
+        string[] s = { "Flame1", "Explosion" };
+        if (word.Length >= 5)
+        {
+            int i = UnityEngine.Random.Range((int)0, 2);
+            _rewardAnimator.SetTrigger(s[i]);
+        }
+        _wordActivationCallback(word);
+    }
 
-        if (_pentagramCounter == _pentagrams.Length)    { _changeScrollButton.SetActive(false); }
-        */
 
+    public void NextScroll()
+    {
         _scrollManager.ChangeScroll(_pentaLoader.GetNextPentagram());
         if (_pentaLoader.OutOfPentagrams()) { _changeScrollButton.SetActive(false); }
+    }
+
+
+    public List<string> GetSelectableWords()
+    {
+        return _scrollManager
+                .GetActiveScroll()
+                .GetPentagram()
+                .GetSelectableWords();
+    }
+
+    public IEnumerator EmulateWordActivation(string word)
+    {
+        Scroll activeScroll = _scrollManager.GetActiveScroll();
+        yield return StartCoroutine(activeScroll.SelectWord(word));
+
+        if (word != activeScroll.GetSelectedWord())
+        {
+            Debug.LogError("Somehow word \"" + word + " couldn't have been selected in a pentagram.");
+            yield break;
+        }
+
+        activeScroll.GetPentagram().TryToUseWord(word);
+        activeScroll.UnselectLetters();
+        _liner.ClearNodes(null);
+    }
+
+    public void ZARUBA()
+    {
+        List<string> words = GetSelectableWords();
+        if (words.Count > 0)
+            StartCoroutine(EmulateWordActivation(words[0]));
+        else
+            NextScroll();
     }
 }

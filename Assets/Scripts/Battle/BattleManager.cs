@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 namespace Battle
 {
     public class BattleManager : MonoBehaviour, IBattleManager
     {
+        [SerializeField] private Animator _bubbleAnimator;
+        [SerializeField] private Text _bubbleText;
+
         [SerializeField] private PentaPuzzleManager _boardGame;
         [SerializeField] private Character _player;
         [SerializeField] private Character _enemy;
@@ -61,6 +66,8 @@ namespace Battle
 
         private void OnWordActivation(string word)
         {
+            _bubbleText.text = word.ToUpper() + "!";
+            _bubbleAnimator.SetTrigger("Show");
             _player.Attack(word.Length);
         }
 

@@ -12,11 +12,11 @@ public class Scroll : MonoBehaviour
     private PoolOfAll _pool;
     private Animator _anim;
 
-    private Pentagram _pentagram;
+    private Pentagram _pentagram;                   public Pentagram GetPentagram() { return _pentagram; }
     private PentaLetter[] _pentaLetters;
 
     private List<PentaLetter> _selectedLetters;
-    private string _currentWord;
+    private string _currentWord;                    public string GetSelectedWord() { return _currentWord; }
 
 
     
@@ -95,14 +95,43 @@ public class Scroll : MonoBehaviour
         }
         _pool.Store(_pentaLetters);
     }
+
     
+    public IEnumerator SelectWord(string word)
+    {
+        bool letterFound = false;
+        PentaLetter previousLetter = null;
+        word = word.ToLower();
+
+        foreach (char letter in word)
+        {
+            letterFound = false;
+            foreach (PentaLetter pentaLetter in _pentaLetters)
+            {
+                if (pentaLetter.GetLetter() == letter)
+                {
+                    letterFound = true;
+                    bool nextLetterIsSelectable = pentaLetter.TryToSelect(previousLetter);
+                    yield return new WaitForSecondsRealtime(0.3f);
+                    if (!nextLetterIsSelectable) { yield break; }
+
+                    previousLetter = pentaLetter;
+                    break;
+                }
+            }
+            if (!letterFound) yield break;
+        }
+    }
+
+
+
     private void SelectLetter(PentaLetter letter)
     {
         _selectedLetters.Add(letter);
         _currentWord += letter.GetLetter();
     }
 
-    private void UnselectLetters()
+    public void UnselectLetters()
     {
         foreach (PentaLetter letter in _selectedLetters)
         { letter.Unselect(); }
@@ -113,8 +142,8 @@ public class Scroll : MonoBehaviour
 
     public void TryActivate(PentaLetter lastSelectedLetter)
     {
-        if (_pentagram.HasWord(_currentWord)) {
-            Debug.Log("There is word " + _currentWord);
+        bool wordIsSelectable = _pentagram.TryToUseWord(_currentWord);
+        if (wordIsSelectable) {
             OnSpellActivated();
         }
         UnselectLetters();

@@ -48,16 +48,16 @@ public class ScrollManager : MonoBehaviour
         scroll.ReturnLettersToPool();
 
 
-        float screenWidth = GetComponent<RectTransform>().rect.width;
+        float scrollWidth = GetComponent<RectTransform>().rect.width;
         //float screenWidth = Screen.width; Debug.Log("ScreenWidth " + screenWidth);
-        float radius = screenWidth * _pentagramRelativeRadius;
-        float letterSize = screenWidth * _letterRelativeSize; Debug.Log("letterSize " + letterSize);
+        float radius = scrollWidth * _pentagramRelativeRadius;
+        float letterSize = scrollWidth * _letterRelativeSize; Debug.Log("letterSize " + letterSize);
 
         scroll.Load(pentagram, radius, letterSize);
     }
 
 
-    public Scroll GetActivePentagram()
+    public Scroll GetActiveScroll()
     {
         return _scrollPlacements[0].GetScroll();
     }
