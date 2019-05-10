@@ -20,11 +20,16 @@ namespace Battle
         [SerializeField] private Text _playerActivatedWords;
         [SerializeField] private Text _enemyActivatedWords;
 
-        [SerializeField] private TurnLabel[] turnLabels;
+        [SerializeField] private TurnLabel[] _turnLabels;
 
+        
         private bool _isPlayerTurn = true;
-        private bool _isBattleStarted = false;
+        private bool _isBossFirstAttack = false;
         private bool _enemyDead;
+
+        [SerializeField] private float _firstBossAttackDelay = 3f;
+        [SerializeField] private float _firstBossAttackTime;
+
 
         [CanBeNull] private Action<bool> _endBattleCallback;
        
@@ -36,27 +41,48 @@ namespace Battle
             _player.SetDeadCallback(OnCharacterDead);
             _player.SetDeadAnimEndCallback(OnDeadAnimationEnd);
             _player.SetEndTurnCallback(OnEndTurn);
+            _player.GetDamageDealer().SetTarget(_enemy);
             _enemy.SetDeadCallback(OnCharacterDead);
             _enemy.SetDeadAnimEndCallback(OnDeadAnimationEnd);
             _enemy.SetEndTurnCallback(OnEndTurn);
+            
+            foreach(var turnLabel in _turnLabels)
+            {
+                turnLabel.setBossIcon(_enemy.GetTurnIcon());
+            }
         }
 
         private void Update()
         {
+            // The shit is needed if battle starts with boss turn (for tutorial) 
+            if (_isBossFirstAttack &&  _firstBossAttackTime < Time.time){
+                _isBossFirstAttack = false;
+                enemyAction();
+            }
         }
 
-        public void StartBattle(bool isPlayerTurn)
+        public void StartBattle(bool isPlayerTurn, string bossName)
         {
             _isPlayerTurn = isPlayerTurn;
             _boardCanvas.blocksRaycasts = _isPlayerTurn;
-            foreach(var turnLabel in turnLabels){
+            _isBossFirstAttack = !_isPlayerTurn;
+            if (_isBossFirstAttack){
+                _firstBossAttackTime = Time.time + _firstBossAttackDelay;
+            }
+            foreach(var turnLabel in _turnLabels){
                 turnLabel.setTurn(_isPlayerTurn);
             }
 
+            _enemy = gameObject.transform.Find(bossName)?.GetComponent<Character>();
+            if (_enemy == null){
+                Debug.LogError("Bad boss name");
+            }
+            _enemyActivatedWords = _enemy.transform.Find("ActivatedWords").GetComponent<Text>();
+
             gameObject.SetActive(true);
-            _isBattleStarted = true;
             _player.gameObject.SetActive(true);
             _enemy.gameObject.SetActive(true);
+            _boardGame.gameObject.SetActive(true);
             _boardGame.StartBoardGame();
         }
         
@@ -66,9 +92,26 @@ namespace Battle
         }
         
 
+        // todo: move to character, AI should depend on boss.
+        private void enemyAction(){
+            if (_enemy.IsDead())
+            {
+                return;
+            }
+             List<string> words = _boardGame.GetSelectableWords();
+                if (words.Count > 0)
+                    StartCoroutine(_boardGame.EmulateWordActivation(words[0]));
+                else{
+                    _boardGame.NextScroll();
+                    words = _boardGame.GetSelectableWords();
+                    StartCoroutine(_boardGame.EmulateWordActivation(words[0]));
+                    }
+        }
+
         private void OnWordActivation(string word)
         {
             if (_isPlayerTurn){
+
                 _player.Attack(word.Length);
                 _bubbleText.text = word.ToUpper() + "!";
                 _bubbleAnimator.SetTrigger("Show");
@@ -84,7 +127,6 @@ namespace Battle
         private void OnCharacterDead(string deadName)
         {
             Debug.Log(deadName + " is dead!");
-            _isBattleStarted = false;
             if (_endBattleCallback != null)
             {
                 _boardGame.EndBoardGame();
@@ -106,21 +148,18 @@ namespace Battle
             _isPlayerTurn = !_isPlayerTurn;
             _boardCanvas.blocksRaycasts = _isPlayerTurn;
             
-            foreach(var turnLabel in turnLabels){
+            foreach(var turnLabel in _turnLabels){
                 turnLabel.setTurn(_isPlayerTurn);
             }
 
             // Enemy deals damage to player
             if (!_isPlayerTurn)
             {
-                List<string> words = _boardGame.GetSelectableWords();
-                if (words.Count > 0)
-                    StartCoroutine(_boardGame.EmulateWordActivation(words[0]));
-                else{
-                    _boardGame.NextScroll();
-                    words = _boardGame.GetSelectableWords();
-                    StartCoroutine(_boardGame.EmulateWordActivation(words[0]));
-                    }
+                Debug.Log("Boss turn");
+                enemyAction();
+            }
+            else{
+                Debug.Log("Player turn");
             }
         }
 

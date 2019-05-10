@@ -59,11 +59,17 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
     }
 
     public void SetWordActivationCallback(Action<string> callback)
-    { _wordActivationCallback += callback; }
+    {
+        _wordActivationCallback = null;
+        _wordActivationCallback += callback;
+    }
 
     public void SetNextScrollCallback(Action callback)
-    { _nextScrollCallback += callback; }
-
+    {
+        _nextScrollCallback = null;
+        _nextScrollCallback += callback;
+    }
+    
     public void OnWordActivation(string word)
     {
         string[] s = { "Flame1", "Explosion" };
@@ -100,6 +106,7 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
         if (word != activeScroll.GetSelectedWord())
         {
             Debug.LogError("Somehow word \"" + word + " couldn't have been selected in a pentagram, but the Mage doesn't give a fuck");
+
             yield break;
         }
 

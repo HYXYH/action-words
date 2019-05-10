@@ -11,6 +11,10 @@ public class TurnLabel : MonoBehaviour
 	[SerializeField] private Sprite _bossIco;
 	[SerializeField] private Image _holderImage;
 
+	public void setBossIcon(Sprite ico)
+	{
+		_bossIco = ico;
+	}
 
 	public void setTurn(bool isPlayerTurn){
 		if (isPlayerTurn){

@@ -112,7 +112,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: makeCanvasTransparent
+    functionName: MakeCanvasTransparent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -126,7 +126,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.85
-    functionName: makeCanvasVisible
+    functionName: MakeCanvasVisible
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
