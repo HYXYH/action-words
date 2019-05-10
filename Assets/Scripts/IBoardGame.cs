@@ -12,5 +12,5 @@ public interface IBoardGame
     void EndBoardGame();
     
 
-    void SetWordActivationCallback(Action<string> callback);
+    void SetWordActivationCallback(Action<string, SpellEffect> callback);
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class BoardGame : MonoBehaviour, IBoardGame
 {
-    [CanBeNull] private Action<string> _wordActivationCallback;
+    [CanBeNull] private Action<string, SpellEffect> _wordActivationCallback;
     [CanBeNull] private Action _tetrinoUsedCallback;
     [CanBeNull] private Action _noMovesCallback;
 
@@ -24,7 +24,7 @@ public class BoardGame : MonoBehaviour, IBoardGame
     }
 
 
-    public void SetWordActivationCallback(Action<string> callback)
+    public void SetWordActivationCallback(Action<string, SpellEffect> callback)
     {
         _wordActivationCallback += callback;
     }
@@ -35,7 +35,7 @@ public class BoardGame : MonoBehaviour, IBoardGame
     {
         if (_wordActivationCallback != null)
         {
-            _wordActivationCallback(word);
+            _wordActivationCallback(word, SpellEffect.None);
         }
         else
         {

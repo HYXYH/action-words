@@ -64,7 +64,7 @@ namespace Battle
         }
         
 
-        private void OnWordActivation(string word)
+        private void OnWordActivation(string word, SpellEffect effect)
         {
             _bubbleText.text = word.ToUpper() + "!";
             _bubbleAnimator.SetTrigger("Show");
