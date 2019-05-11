@@ -34,8 +34,7 @@ public class GameManager : MonoBehaviour
 
     private void NextLevel(){
         _level++;
-        // уровня то всего 3 лол
-        _level = _level % 3;
+        _level = _level % _bossNames.Length;
         _deathPanel.SetActive(false);
         _puzzleCanvas.gameObject.SetActive(true);
          _battleManager.StartBattle(true, _bossNames[_level]);
