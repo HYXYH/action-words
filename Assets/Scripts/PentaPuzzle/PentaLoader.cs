@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PentaLoader : MonoBehaviour
 {
-    private string _pentagramsFilePath = "Assets/Resources/levels.txt";
+    private string _pentagramsFilePath = "levels";
 
     private int _pentaCounter;
     private Pentagram[] _pentagrams;
@@ -19,7 +19,8 @@ public class PentaLoader : MonoBehaviour
 
     private void LoadPentagrams()
     {
-        StreamReader sr = new StreamReader(_pentagramsFilePath);
+        TextAsset textAsset = Resources.Load<TextAsset>(_pentagramsFilePath);
+        StringReader sr = new StringReader(textAsset.text);
 
         string[] lineSeparators = { "\n\r", "\n" }; // UNNECESSARY READING OF THE WHOLE FILE HERE.
         string[] wordSeparators = { ", " };         // THINK OF ANOTHER SOLUTION!
