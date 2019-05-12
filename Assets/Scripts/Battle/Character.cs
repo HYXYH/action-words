@@ -9,6 +9,7 @@ namespace Battle
     public class Character : MonoBehaviour
     {
         [SerializeField] private string _name;
+        [SerializeField] private Sprite _TurnIcon;
         [SerializeField] private int _maxHealth;
         [SerializeField] private int _health;
         [SerializeField] private int _damage;
@@ -18,8 +19,10 @@ namespace Battle
         public string Name => _name;
         public int Damage => _damage;
 
+        [SerializeField] private  Text  _healthText;
         [SerializeField] private  Image _progressBar;
         [SerializeField] private  Image _avatar;
+        private Color _initColor;
         private  Text _charInfo;
 
         [SerializeField] private float _shakeTime = 0.1f;
@@ -28,8 +31,9 @@ namespace Battle
         [SerializeField] private float _shakeAmp = 0.8f;
         private float _shakeEndTime = 0;
 
-        [CanBeNull] private Action<string> _deadCallback;
+        [CanBeNull] private Action<string> _deadCallback = null;
         [CanBeNull] private Action _deadAnimEndCallback;
+        
         [SerializeField] private Animator _attackAnimator;
         [SerializeField] private Animator _avatarAnimator;
 
@@ -39,12 +43,30 @@ namespace Battle
 
         public void SetDeadCallback(Action<string> callback)
         {
+            _deadCallback = null;
             _deadCallback += callback;
         }
 
         public void SetDeadAnimEndCallback(Action callback)
         {
+            _deadAnimEndCallback = null;
             _deadAnimEndCallback += callback;
+        }
+
+        public void SetEndTurnCallback(Action callback)
+        {   if (_damageDealer == null){
+             _damageDealer = _attackAnimator.gameObject.GetComponent<DamageDealer>();
+            }
+            _damageDealer.SetEndTurnCallback(callback);
+        }
+
+        public DamageDealer GetDamageDealer(){
+            return _damageDealer;
+        }
+
+        public Sprite GetTurnIcon()
+        {
+            return _TurnIcon;
         }
 
         void Start()
@@ -54,13 +76,11 @@ namespace Battle
             _charInfo = GetComponentInChildren<Text>();
             _charInfo.text = _name;
             _damageDealer = _attackAnimator.gameObject.GetComponent<DamageDealer>();
+
         }
         
         public void DealDamage(int damage)
         {
-            if (_health == 0)
-                return;
-
             if (name.Equals("Player"))
                 _theSoundManager.PlaySound("Pain");
             
@@ -79,8 +99,6 @@ namespace Battle
                 _health = 0;
                 StartCoroutine(Shake(_deadShakeTime));
                 _deadCallback(_name);
-
-
             }
             else
             {         
@@ -91,7 +109,7 @@ namespace Battle
 
         public void Attack(int prescaler){
             _attackAnimator.SetTrigger(_attackType);
-            _damageDealer.setDamage(prescaler * _damage);
+            _damageDealer.SetDamage(prescaler * _damage);
 
             _theSoundManager.PlaySound(_attackType);
             return;
@@ -105,6 +123,7 @@ namespace Battle
         private void UpdateProgressBar()
         {
             _progressBar.fillAmount = _health / (float) _maxHealth;
+            _healthText.text = _health + " / " + _maxHealth;
         }
 
 
@@ -141,7 +160,7 @@ namespace Battle
                 yield return 1;
             }
             _avatar.rectTransform.anchoredPosition = initPos;
-            _avatar.color = Color.white;
+            _avatar.color = _initColor;
 
             if (IsDead())
             {
@@ -159,9 +178,14 @@ namespace Battle
 
         private void OnEnable()
         {
-            _avatar.color = Color.white;
+            _initColor = _avatar.color;
             _health = _maxHealth;
             UpdateProgressBar();
+        }
+
+        private void OnDisable()
+        {
+            _avatar.color = _initColor;
         }
     }
 }

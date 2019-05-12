@@ -5,7 +5,7 @@ namespace Battle
 {
    public interface IBattleManager
    {
-      void StartBattle();
+      void StartBattle(bool isPlayerTurn, string bossName);
 
       // True if player won
       void SetBattleEndCallback(Action<bool> callback);

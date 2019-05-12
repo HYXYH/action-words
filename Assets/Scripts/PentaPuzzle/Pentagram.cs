@@ -23,8 +23,6 @@ public class Pentagram : MonoBehaviour
 
     public bool TryToUseWord(string word)
     {
-        word = word.ToLower();
-        Debug.Log("Checking for word " + word);
         /*
         int timesWordIsUsed = 0;
         try

@@ -12,6 +12,8 @@ public class ScrollManager : MonoBehaviour
 
     [SerializeField] private ScrollPlacement[] _scrollPlacements;
 
+    private Scroll _activeScroll;       public Scroll GetActiveScroll() { return _activeScroll; }
+    
 
     private float _pentagramRelativeRadius = 0.333f;
     private float _letterRelativeSize = 0.200f;
@@ -31,6 +33,8 @@ public class ScrollManager : MonoBehaviour
             .GetScroll()
             .GetComponent<Animator>()
             .SetTrigger("ThrownAway");
+
+        _activeScroll = _scrollPlacements[1].GetScroll();
     }
 
     private void Swap(int thisIsNotUsed)
@@ -54,11 +58,5 @@ public class ScrollManager : MonoBehaviour
         float letterSize = scrollWidth * _letterRelativeSize; Debug.Log("letterSize " + letterSize);
 
         scroll.Load(pentagram, radius, letterSize);
-    }
-
-
-    public Scroll GetActiveScroll()
-    {
-        return _scrollPlacements[0].GetScroll();
     }
 }

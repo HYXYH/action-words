@@ -12,8 +12,12 @@ public class Scroll : MonoBehaviour
     private PoolOfAll _pool;
     private Animator _anim;
 
-    private Pentagram _pentagram;                   public Pentagram GetPentagram() { return _pentagram; }
+    [SerializeField]
+    private Text _wordsSelectedText;            public Text GetWordsSelectedCounter() { return _wordsSelectedText; }
+
+    private Pentagram _pentagram;               public Pentagram GetPentagram() { return _pentagram; }
     private PentaLetter[] _pentaLetters;
+
 
     private List<PentaLetter> _selectedLetters;
     private string _currentWord;                    public string GetSelectedWord() { return _currentWord; }

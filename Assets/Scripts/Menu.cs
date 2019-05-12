@@ -20,7 +20,7 @@ public class Menu : MonoBehaviour
     public void OnPlayClick()
     {
         gameObject.SetActive(false);
-        _battleManager.StartBattle();
+        _battleManager.StartBattle(false, "DED_GRIB");
     }
 
 

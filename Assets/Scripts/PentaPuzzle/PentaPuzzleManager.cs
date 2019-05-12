@@ -3,15 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PentaPuzzleManager : MonoBehaviour, IBoardGame
 {
-    
-
     private Action<string, SpellEffect> _wordActivationCallback;
+    private Action _nextScrollCallback;
 
     [SerializeField] private Animator _rewardAnimator;
     [SerializeField] private GameObject _changeScrollButton;
+
+    [SerializeField] private Text _pentagramsLeftText;
+    [SerializeField] private Text _wordsSelectedText;
+
+    private int _maxWords;
+    private int _wordsSelected;
 
     private PentaLoader _pentaLoader;
     private PoolOfAll _pool;
@@ -56,11 +62,20 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
 
     public void EndBoardGame()
     {
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void SetWordActivationCallback(Action<string, SpellEffect> callback)
-    { _wordActivationCallback += callback; }
+    {
+        _wordActivationCallback = null;
+        _wordActivationCallback += callback;
+    }
+
+    public void SetNextScrollCallback(Action callback)
+    {
+        _nextScrollCallback = null;
+        _nextScrollCallback += callback;
+    }
 
     public void OnWordActivation(string word, int[] letterNumbersSequence)
     {
@@ -70,11 +85,11 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
             int i = UnityEngine.Random.Range((int)0, 2);
             _rewardAnimator.SetTrigger(s[i]);
         }
-        
+
+        IncreaseWordsSelectedText();
 
         _wordActivationCallback(word, EffectOfSequence(word.Length, letterNumbersSequence));
     }
-
 
     private SpellEffect EffectOfSequence(int wordLength, int[] sequence)
     {
@@ -101,8 +116,19 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
 
     public void NextScroll()
     {
-        _scrollManager.ChangeScroll(_pentaLoader.GetNextPentagram());
+        Pentagram newPentagram = _pentaLoader.GetNextPentagram();
+        _scrollManager.ChangeScroll(newPentagram);
         if (_pentaLoader.OutOfPentagrams()) { _changeScrollButton.SetActive(false); }
+
+        _wordsSelectedText = _scrollManager.GetActiveScroll().GetWordsSelectedCounter();
+
+        _pentagramsLeftText.text = _pentaLoader.PentagramsLeft() + " свитков осталось.";
+
+        _maxWords = newPentagram.GetSelectableWords().Count;
+        _wordsSelected = 0;
+        _wordsSelectedText.text = "0 / " + _maxWords + " слов найдено.";
+
+        _nextScrollCallback();
     }
 
 
@@ -121,13 +147,16 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
 
         if (word != activeScroll.GetSelectedWord())
         {
-            Debug.LogError("Somehow word \"" + word + " couldn't have been selected in a pentagram.");
+            Debug.LogError("Somehow word \"" + word + " couldn't have been selected in a pentagram, but the Mage doesn't give a fuck");
             yield break;
         }
 
         activeScroll.GetPentagram().TryToUseWord(word);
+        IncreaseWordsSelectedText();
+
         activeScroll.UnselectLetters();
         _liner.ClearNodes(null);
+        _wordActivationCallback(word, SpellEffect.None);
     }
 
     public void ZARUBA()
@@ -137,5 +166,11 @@ public class PentaPuzzleManager : MonoBehaviour, IBoardGame
             StartCoroutine(EmulateWordActivation(words[0]));
         else
             NextScroll();
+    }
+
+
+    private void IncreaseWordsSelectedText()
+    {
+        _wordsSelectedText.text = ++_wordsSelected + " / " + _maxWords + " слов найдено.";
     }
 }
