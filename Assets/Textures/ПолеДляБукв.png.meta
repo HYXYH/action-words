@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: f34d54c7348e3496f8bcb82b13c36f3a
+guid: 4b0a7aec21f50f04a8a6f5f2bb7ed014
 TextureImporter:
   fileIDToRecycleName:
-    21300000: HPpurple_0
+    21300000: "\u041F\u043E\u043B\u0435\u0414\u043B\u044F\u0411\u0443\u043A\u0432_0"
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -33,7 +33,7 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: -1
-    aniso: -1
+    aniso: 1
     mipBias: -100
     wrapU: 1
     wrapV: 1
@@ -96,21 +96,21 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HPpurple_0
+      name: "\u041F\u043E\u043B\u0435\u0414\u043B\u044F\u0411\u0443\u043A\u0432_0"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1300
-        height: 394
+        x: 99
+        y: 81
+        width: 529
+        height: 537
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a3d24bb5c2b34e349a7b98805f499d66
+      spriteID: 105f610cbcd569440b7f2b759e1c2c9a
       vertices: []
       indices: 
       edges: []
@@ -118,7 +118,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 8d9d858b5d05e0143add1b487d8241dd
+    spriteID: 06ed14fb566be394f8fc14508b9c0d09
     vertices: []
     indices: 
     edges: []

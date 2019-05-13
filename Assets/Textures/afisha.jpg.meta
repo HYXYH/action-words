@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: f34d54c7348e3496f8bcb82b13c36f3a
+guid: 8c84271a086a0f748889940a37809f6e
 TextureImporter:
   fileIDToRecycleName:
-    21300000: HPpurple_0
+    21300000: afisha_0
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -96,21 +96,21 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HPpurple_0
+      name: afisha_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1300
-        height: 394
+        width: 10786
+        height: 5669
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a3d24bb5c2b34e349a7b98805f499d66
+      spriteID: e487d58416b1e8a49a3cc2d69be37de0
       vertices: []
       indices: 
       edges: []
@@ -118,7 +118,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 8d9d858b5d05e0143add1b487d8241dd
+    spriteID: 6941bed5a7dc9e841a31c666559e94a5
     vertices: []
     indices: 
     edges: []

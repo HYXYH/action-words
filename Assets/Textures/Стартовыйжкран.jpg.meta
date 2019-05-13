@@ -1,8 +1,7 @@
 fileFormatVersion: 2
-guid: f34d54c7348e3496f8bcb82b13c36f3a
+guid: 560ffc63122cf6d46856da6b96c3645f
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: HPpurple_0
+  fileIDToRecycleName: {}
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -94,31 +93,11 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: HPpurple_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1300
-        height: 394
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a3d24bb5c2b34e349a7b98805f499d66
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 8d9d858b5d05e0143add1b487d8241dd
+    spriteID: 
     vertices: []
     indices: 
     edges: []

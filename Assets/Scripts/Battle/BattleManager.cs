@@ -74,10 +74,13 @@ namespace Battle
             }
 
             _enemy = gameObject.transform.Find(bossName)?.GetComponent<Character>();
-            if (_enemy == null){
+            if (_enemy == null) {
                 Debug.LogError("Bad boss name");
             }
-            _enemyActivatedWords = _enemy.transform.Find("ActivatedWords").GetComponent<Text>();
+            _enemyActivatedWords = _enemy.transform
+                                         .Find ("ActivatedWordsPlaceholder")
+                                         .Find ("ActivatedWords")
+                                         .GetComponent<Text> ();
 
             gameObject.SetActive(true);
             _player.gameObject.SetActive(true);

@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: f34d54c7348e3496f8bcb82b13c36f3a
+guid: ec96f3dbae272f34f94b014c35fa3cce
 TextureImporter:
   fileIDToRecycleName:
-    21300000: HPpurple_0
+    21300000: Paper_0
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -47,7 +47,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 1202, y: 162, z: 990, w: 166}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -96,13 +96,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HPpurple_0
+      name: Paper_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1300
-        height: 394
+        x: 1214
+        y: 166
+        width: 1671
+        height: 1709
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -110,7 +110,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a3d24bb5c2b34e349a7b98805f499d66
+      spriteID: 0848742a29744324c86a71c972e9393c
       vertices: []
       indices: 
       edges: []
@@ -118,7 +118,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 8d9d858b5d05e0143add1b487d8241dd
+    spriteID: 1a2cfe46b242ed149b84bbd611b340d1
     vertices: []
     indices: 
     edges: []

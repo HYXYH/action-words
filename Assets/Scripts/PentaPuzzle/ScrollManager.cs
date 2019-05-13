@@ -15,8 +15,8 @@ public class ScrollManager : MonoBehaviour
     private Scroll _activeScroll;       public Scroll GetActiveScroll() { return _activeScroll; }
     
 
-    private float _pentagramRelativeRadius = 0.333f;
-    private float _letterRelativeSize = 0.200f;
+    [SerializeField] private float _pentagramRelativeRadius = 0.333f;
+    [SerializeField] private float _letterRelativeSize = 0.200f;
 
     void Awake()
     {
@@ -24,6 +24,8 @@ public class ScrollManager : MonoBehaviour
         {
             sp.GetScroll().AddThrownAwayCallback(Swap);
         }
+
+        _activeScroll = _scrollPlacements[1].GetScroll();
     }
 
     public void ChangeScroll(Pentagram pentagram)
